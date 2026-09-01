@@ -10,13 +10,15 @@ import BentoGridSection from "@/components/Pages/HomePage/BentoGridSection";
 
 /* ─── Skeletons ─── */
 const HeroSkeleton = () => (
-  <div className="container mx-auto px-2 sm:px-4 py-2 md:py-6 xl:py-7 xl:pt-10">
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-4">
-      <div className="lg:col-span-8 bg-gray-200 animate-pulse rounded-lg h-[160px] sm:h-[230px] lg:h-[450px]" />
-      <div className="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 gap-3 md:gap-4">
-        <div className="bg-gray-200 animate-pulse rounded-lg h-[100px] sm:h-[140px] lg:h-full" />
-        <div className="bg-gray-200 animate-pulse rounded-lg h-[100px] sm:h-[140px] lg:h-full" />
-      </div>
+  <div className="container mx-auto px-2 sm:px-4 py-3 md:py-6 space-y-4 md:space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div className="lg:col-span-8 bg-gray-200 animate-pulse rounded-3xl h-[200px] sm:h-[300px] lg:h-[490px]" />
+      <div className="lg:col-span-4 bg-gray-200 animate-pulse rounded-3xl h-[200px] lg:h-[490px]" />
+    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
+      <div className="bg-gray-200 animate-pulse rounded-2xl h-[140px]" />
+      <div className="bg-gray-200 animate-pulse rounded-2xl h-[140px]" />
+      <div className="bg-gray-200 animate-pulse rounded-2xl h-[140px]" />
     </div>
   </div>
 );
