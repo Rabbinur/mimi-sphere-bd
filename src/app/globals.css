@@ -3,6 +3,17 @@
 @tailwind utilities;
 
 :root {
+  /* 🔵 Brand HEX Color Codes (Mimi Sphere Official) */
+  --brand-navy: #002447;
+  --brand-navy-dark: #071426;
+  --brand-navy-light: #0b2545;
+  --brand-gold: #f59e0b;
+  --brand-gold-dark: #d97706;
+  --brand-gold-light: #fef3c7;
+  --brand-amber: #f59e0b;
+  --brand-surface: #f8fafc;
+  --brand-border: #e2e8f0;
+
   /* 🔵 Mimi Sphere Primary (Midnight Navy from logo) */
   --primary: 210 100% 15%;
   --primary-foreground: 0 0% 100%;

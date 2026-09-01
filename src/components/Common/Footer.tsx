@@ -88,22 +88,22 @@ const Footer = () => {
               {[
                 {
                   platform: "facebook",
-                  url: "https://www.facebook.com/shoppingcartbd.official",
+                  url: "https://www.facebook.com/mimispherebd",
                   icon: "/icons/facebook.png",
                 },
                 {
                   platform: "instagram",
-                  url: "https://www.instagram.com/shoppingcart.bd/",
+                  url: "https://www.instagram.com/mimispherebd",
                   icon: "/icons/instagram.png",
                 },
                 {
                   platform: "whatsapp",
-                  url: "https://wa.link/fabxoj",
+                  url: "https://wa.me/8801719713061",
                   icon: "/icons/whatsapp.png",
                 },
                 {
                   platform: "tiktok",
-                  url: "https://www.tiktok.com/@shoppingcartbd",
+                  url: "https://www.tiktok.com/@mimispherebd",
                   icon: "/icons/tik-tok.png",
                 },
               ].map((link, idx) => (
@@ -179,10 +179,10 @@ const Footer = () => {
                 label="Phone Support"
                 content={
                   <a
-                    href={`tel:${cmsData?.company?.phone || "+8801722597565"}`}
+                    href={`tel:${cmsData?.company?.phone || "+8801719713061"}`}
                     className="text-sm font-medium text-slate-200 hover:text-amber-400 transition-colors"
                   >
-                    {cmsData?.company?.phone || "+880 1722-597565"}
+                    {cmsData?.company?.phone || "01719713061"}
                   </a>
                 }
               />
@@ -217,7 +217,7 @@ const Footer = () => {
                 content={
                   <div>
                     <a
-                      href={`https://wa.me/${cmsData?.company?.phone?.replace(/\D/g, '') || "8801722597565"}`}
+                      href={`https://wa.me/${cmsData?.company?.phone?.replace(/\D/g, '') || "8801719713061"}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 mt-1 text-[11px] font-black text-amber-400 uppercase tracking-widest hover:text-amber-300 transition-colors"

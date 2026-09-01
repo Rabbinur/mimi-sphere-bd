@@ -4,29 +4,29 @@ export const cmsData: TCMS = {
   company: {
     name: "Mimi Sphere",
     email: "support@mimisphere.com",
-    phone: "+8801722597565",
+    phone: "01719713061",
     address: "Dhaka, Bangladesh",
   },
   social: {
     links: [
       {
         platform: "facebook",
-        url: "https://www.facebook.com/shoppingcartbd.official",
+        url: "https://www.facebook.com/mimispherebd",
         icon: "/icons/facebook.png",
       },
       {
         platform: "instagram",
-        url: "https://www.instagram.com/shoppingcart.bd/",
+        url: "https://www.instagram.com/mimispherebd",
         icon: "/icons/instagram.png",
       },
       {
         platform: "whatsapp",
-        url: "https://wa.link/fabxoj",
+        url: "https://wa.me/8801719713061",
         icon: "/icons/whatsapp.png",
       },
       {
         platform: "tiktok",
-        url: "https://www.tiktok.com/@shoppingcartbd",
+        url: "https://www.tiktok.com/@mimispherebd",
         icon: "/icons/tik-tok.png",
       },
     ],

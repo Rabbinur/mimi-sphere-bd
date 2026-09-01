@@ -105,7 +105,7 @@ export const MobileMenu = ({ isOpen, setIsOpen }: MobileMenuProps) => {
 
                     <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Contact Info</p>
                     <div className="px-3 space-y-4">
-                        <ContactItem icon={Phone} label={cmsData?.company?.phone || "+880 1722597565"} type="tel" />
+                        <ContactItem icon={Phone} label={cmsData?.company?.phone || "01719713061"} type="tel" />
                         <ContactItem icon={Mail} label={cmsData?.company?.email || "support@mimisphere.com"} type="mail" />
                     </div>
                 </div>
