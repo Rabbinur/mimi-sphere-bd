@@ -39,23 +39,23 @@ const Footer = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <ValueProp
               icon={<ShieldCheck size={20} />}
-              title="Secure Checkout"
-              desc="SSL Encrypted Payments"
+              title="Quality You Can Trust"
+              desc="100% Safe & Tested for Kids"
             />
             <ValueProp
               icon={<PhoneCall size={20} />}
-              title="24/7 Support"
-              desc="Always here to help"
+              title="Creative Learning"
+              desc="Smart Gadgets & Fun Toys"
             />
             <ValueProp
               icon={<Globe size={20} />}
-              title="Nationwide Shipping"
-              desc="Fast & Reliable Delivery"
+              title="Nationwide Delivery"
+              desc="Fast 48-72h Across Bangladesh"
             />
             <ValueProp
               icon={<ShieldCheck size={20} />}
-              title="100% Genuine"
-              desc="Quality Guaranteed"
+              title="Inspect Before Pay"
+              desc="Cash on Delivery Available"
             />
           </div>
         </div>
@@ -80,7 +80,7 @@ const Footer = () => {
             </Link>
 
             <p className="text-sm leading-relaxed text-slate-300 max-w-sm">
-              <strong className="text-amber-400 font-semibold">Mimi Sphere</strong> — Everything You Need, All in One Place. Delivering authentic Korean cosmetics, premium lifestyle essentials, and curated global trends right to your doorstep.
+              <strong className="text-amber-400 font-semibold">Mimi Sphere</strong> — Smart gadgets &amp; creative learning toys for happy, smarter kids. 🧸📱 Quality you can trust, delivered across Bangladesh. 🚚
             </p>
 
             {/* Social icons */}

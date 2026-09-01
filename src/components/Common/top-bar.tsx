@@ -16,7 +16,7 @@ export function TopBar() {
           </Link>
           <span className="hidden md:inline text-white/20">|</span>
           <span className="hidden md:inline text-amber-300/90 text-[11px] font-normal tracking-wide">
-            ✨ Everything You Need, All in One Place
+            🧸 Smart Gadgets &amp; Creative Learning Toys for Happy Kids
           </span>
         </div>
 
