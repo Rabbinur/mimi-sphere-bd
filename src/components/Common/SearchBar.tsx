@@ -47,7 +47,7 @@ export const SearchBar = ({ onResultClick }: SearchBarProps) => {
 
     return (
         <div ref={containerRef} className="relative w-full">
-            <div className="flex border-2 border-primary/20 focus-within:border-primary rounded-xl overflow-hidden h-10 md:h-11 bg-slate-50 transition-all">
+            <div className="flex border-2 border-slate-200 focus-within:border-[#002447] rounded-2xl overflow-hidden h-10 md:h-11 bg-slate-50/80 transition-all shadow-sm hover:border-slate-300">
                 <Input
                     type="text"
                     value={searchQuery}
@@ -56,45 +56,45 @@ export const SearchBar = ({ onResultClick }: SearchBarProps) => {
                         setSearchQuery(e.target.value);
                         setIsOpen(true);
                     }}
-                    placeholder="Search for products..."
-                    className="flex-1 rounded-none border-none focus-visible:ring-0 bg-transparent h-full text-sm font-medium"
+                    placeholder="Search for products, brands, or categories..."
+                    className="flex-1 rounded-none border-none focus-visible:ring-0 bg-transparent h-full text-sm font-medium px-4 text-slate-800 placeholder:text-slate-400"
                 />
 
                 <Button
                     type="button"
                     aria-label="Search"
-                    className="rounded-none bg-primary hover:bg-primary/90 h-full w-12 p-0 transition-colors"
+                    className="rounded-none bg-[#002447] hover:bg-[#071426] h-full w-12 p-0 transition-colors flex items-center justify-center"
                 >
                     {isFetching ? (
-                        <Loader2 className="h-4 w-4 animate-spin text-white" />
+                        <Loader2 className="h-4 w-4 animate-spin text-amber-400" />
                     ) : (
-                        <Search className="h-4 w-4 text-white" />
+                        <Search className="h-4 w-4 text-amber-400" />
                     )}
                 </Button>
             </div>
 
             {/* Search Results Dropdown */}
             {isOpen && debouncedSearch && (
-                <div className="absolute z-[100] mt-2 w-full bg-white border border-slate-100 rounded-xl shadow-2xl max-h-[70vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-200">
+                <div className="absolute z-[100] mt-2 w-full bg-white border border-slate-100 rounded-2xl shadow-2xl max-h-[70vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-200">
                     {isFetching ? (
                         <div className="p-8 flex flex-col items-center gap-2">
-                            <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                            <p className="text-xs text-slate-400 font-medium">Searching products...</p>
+                            <Loader2 className="h-6 w-6 animate-spin text-[#002447]" />
+                            <p className="text-xs text-slate-500 font-medium">Searching Mimi Sphere catalog...</p>
                         </div>
                     ) : products.length === 0 ? (
                         <div className="p-8 text-center">
                             <p className="text-sm text-slate-500 font-medium italic">No products found for "{debouncedSearch}"</p>
                         </div>
                     ) : (
-                        <div className="py-2">
+                        <div className="py-2 divide-y divide-slate-50">
                             {products.map((product: TProduct) => (
                                 <Link
                                     key={product._id}
                                     href={`/products/${product.url_handle}`}
-                                    className="flex items-center gap-4 px-4 py-3 hover:bg-slate-50 transition-colors border-b border-slate-50 last:border-0"
+                                    className="flex items-center gap-4 px-4 py-3 hover:bg-slate-50 transition-colors group"
                                     onClick={handleCloseSearch}
                                 >
-                                    <div className="relative h-12 w-12 rounded-lg overflow-hidden flex-shrink-0 bg-slate-100 border">
+                                    <div className="relative h-12 w-12 rounded-xl overflow-hidden flex-shrink-0 bg-slate-100 border border-slate-200 group-hover:border-amber-300 transition-colors">
                                         <Image
                                             src={product?.thumbnail || "/logo.png"}
                                             alt={product.product_title}
@@ -105,10 +105,10 @@ export const SearchBar = ({ onResultClick }: SearchBarProps) => {
                                     </div>
 
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-semibold text-slate-800 truncate">
+                                        <p className="text-sm font-semibold text-slate-800 truncate group-hover:text-[#002447] transition-colors">
                                             {product.product_title}
                                         </p>
-                                        <p className="text-xs font-bold text-primary">
+                                        <p className="text-xs font-bold text-amber-600">
                                             ৳ {product.product_price}
                                         </p>
                                     </div>

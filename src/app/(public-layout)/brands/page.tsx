@@ -3,23 +3,23 @@ import { getBrands } from '@/lib/server-api';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Our Brands | Shopping Cart BD',
-  description: 'Explore our wide range of authentic Korean brands, bags, and accessories. Shop by your favorite brand at Shopping Cart BD.',
-  keywords: ['korean brands', 'authentic brands', 'shopping cart bd brands', 'korean cosmetics brands'],
+  title: 'Our Brands | Mimi Sphere',
+  description: 'Explore our wide range of authentic global & Korean brands, cosmetics, and accessories. Shop by your favorite brand at Mimi Sphere.',
+  keywords: ['mimi sphere brands', 'korean brands', 'authentic brands', 'korean cosmetics brands'],
   alternates: {
-    canonical: 'https://www.shoppingcart.bd/brands',
+    canonical: 'https://www.mimisphere.com/brands',
   },
   openGraph: {
-    title: 'Our Brands | Shopping Cart BD',
-    description: 'Explore our wide range of authentic Korean brands, bags, and accessories.',
-    url: 'https://www.shoppingcart.bd/brands',
-    siteName: 'Shopping Cart BD',
+    title: 'Our Brands | Mimi Sphere',
+    description: 'Explore our wide range of authentic global brands, cosmetics, and accessories at Mimi Sphere.',
+    url: 'https://www.mimisphere.com/brands',
+    siteName: 'Mimi Sphere',
     images: [
       {
-        url: 'https://www.shoppingcart.bd/og-brands.jpg',
+        url: 'https://www.mimisphere.com/og.png',
         width: 1200,
         height: 630,
-        alt: 'Our Brands - Shopping Cart BD',
+        alt: 'Our Brands - Mimi Sphere',
       },
     ],
     locale: 'en_US',

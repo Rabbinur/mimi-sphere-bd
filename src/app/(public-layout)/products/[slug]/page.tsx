@@ -39,12 +39,12 @@ export async function generateMetadata({
   const product = await getProduct(slug);
 
   if (!product) {
-    return { title: "Product Not Found | Shopping Cart BD" };
+    return { title: "Product Not Found | Mimi Sphere" };
   }
 
-  const title = `${product.product_title} | Shopping Cart BD`;
+  const title = `${product.product_title} | Mimi Sphere`;
   const description = truncateText(
-    `Buy ${product.product_title} online in Bangladesh 💖 Enjoy cash on delivery, inspection before payment & fast shipping. Order now!`,
+    `Buy ${product.product_title} online at Mimi Sphere Bangladesh. 100% authentic, cash on delivery & fast shipping. Order now!`,
     155
   );
   const image = product.thumbnail;
@@ -55,17 +55,17 @@ export async function generateMetadata({
     keywords: [
       product.product_title,
       product?.product_categories?.[0]?.name,
-      "korean cosmetics bangladesh",
-      "shopping cart bd",
+      "mimi sphere",
+      "authentic cosmetics",
     ].filter(Boolean),
     alternates: {
-      canonical: `https://www.shoppingcart.bd/products/${slug}`,
+      canonical: `https://www.mimisphere.com/products/${slug}`,
     },
     openGraph: {
       title,
       description,
-      url: `https://www.shoppingcart.bd/products/${slug}`,
-      siteName: "Shopping Cart BD",
+      url: `https://www.mimisphere.com/products/${slug}`,
+      siteName: "Mimi Sphere",
       images: image ? [{ url: image, width: 800, height: 800, alt: product.product_title }] : [],
       locale: "en_US",
       type: "website",
@@ -99,7 +99,7 @@ function ProductJsonLd({ product }: { product: any }) {
     category: product.product_categories?.[0]?.name,
     offers: {
       "@type": "Offer",
-      url: `https://shoppingcart.bd/products/${product.url_handle || product.slug}`,
+      url: `https://www.mimisphere.com/products/${product.url_handle || product.slug}`,
       priceCurrency: "BDT",
       price: product.product_price,
       availability: product.quantity > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",

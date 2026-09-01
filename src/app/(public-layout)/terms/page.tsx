@@ -96,7 +96,7 @@ export default function TermsPage() {
             <TermSection
               icon={Scale}
               title="1. Acceptance of Terms"
-              content="By accessing and using Shopping Cart BD, you acknowledge that you have read, understood, and agree to be bound by these Terms & Conditions. If you do not agree, please refrain from using our services."
+              content="By accessing and using Mimi Sphere, you acknowledge that you have read, understood, and agree to be bound by these Terms & Conditions. If you do not agree, please refrain from using our services."
             />
 
             <TermSection
@@ -134,13 +134,13 @@ export default function TermsPage() {
             <TermSection
               icon={ShieldAlert}
               title="6. Limitation of Liability"
-              content="Shopping Cart BD shall not be liable for any direct, indirect, or incidental damages resulting from the use or inability to use our services or products purchased through our platform."
+              content="Mimi Sphere shall not be liable for any direct, indirect, or incidental damages resulting from the use or inability to use our services or products purchased through our platform."
             />
 
             <TermSection
               icon={Copyright}
               title="7. Intellectual Property"
-              content="All content on this website, including text, graphics, logos, and images, is the property of Shopping Cart BD and is protected by Bangladesh's copyright and intellectual property laws."
+              content="All content on this website, including text, graphics, logos, and images, is the property of Mimi Sphere and is protected by copyright and intellectual property laws."
             />
 
             <TermSection

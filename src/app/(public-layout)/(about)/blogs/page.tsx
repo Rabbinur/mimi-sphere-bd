@@ -6,9 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Blogs & Insights | Shopping Cart BD",
+  title: "Blogs & Insights | Mimi Sphere",
   description:
-    "Stay updated with the latest trends in global logistics, sourcing, and international trade with Shopping Cart BD.",
+    "Stay updated with the latest trends in cosmetics, lifestyle, and fashion with Mimi Sphere.",
   alternates: {
     canonical: "/blogs",
   },

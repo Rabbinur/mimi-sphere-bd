@@ -74,7 +74,7 @@ export function MobileNav() {
 
   return (
     <div className={cn(
-      "fixed border-primary bottom-0 left-0 z-50 w-full h-16 bg-white/95 backdrop-blur-md text-slate-900 border-t rounded-t-[24px] md:hidden shadow-[0_-10px_30px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-in-out",
+      "fixed bottom-0 left-0 z-50 w-full h-16 bg-white/95 backdrop-blur-md text-slate-900 border-t border-slate-200/70 rounded-t-[24px] md:hidden shadow-[0_-10px_30px_rgba(0,36,71,0.08)] transition-transform duration-300 ease-in-out",
       visible ? "translate-y-0" : "translate-y-full"
     )}>
       <div className="grid h-full max-w-lg grid-cols-5 mx-auto px-2 items-center">
@@ -90,9 +90,9 @@ export function MobileNav() {
               className="
                 absolute -top-6
                 w-14 h-14 rounded-full 
-                bg-gradient-to-tr from-primary via-blue-600 to-blue-400
+                bg-gradient-to-b from-[#001f3f] to-[#002b4d]
                 text-white flex items-center justify-center
-                shadow-[0_8px_20px_rgba(30,58,138,0.3)]
+                shadow-[0_8px_25px_rgba(0,36,71,0.35)]
                 border-4 border-white
                 hover:scale-105 active:scale-95 transition-all duration-300
               "
@@ -100,16 +100,16 @@ export function MobileNav() {
               <Image
                 src="/cart-icon.png"
                 alt="Cart"
-                width={32}
-                height={32}
-                className="w-8 h-8 object-contain brightness-0 invert"
+                width={28}
+                height={28}
+                className="w-7 h-7 object-contain brightness-0 invert"
               />
               {cartItems.length > 0 && (
                 <span
                   className="
                     absolute -top-1 -right-1
                     flex h-5 w-5 items-center justify-center
-                    rounded-full bg-red-600 text-[10px] font-bold text-white
+                    rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-[10px] font-bold text-white
                     border-2 border-white shadow-md
                   "
                 >

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us",
-  description: "Learn about Shopping Cart BD's mission to provide comprehensive global logistics and sourcing solutions.",
+  title: "About Us | Mimi Sphere",
+  description: "Learn about Mimi Sphere's mission: Everything You Need, All in One Place.",
 };
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {

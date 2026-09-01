@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Secure Checkout | Shopping Cart BD",
-  description: "Securely complete your purchase at Shopping Cart BD. Fast and reliable online shopping BD with secure payment gateways.",
+  title: "Secure Checkout | Mimi Sphere",
+  description: "Securely complete your purchase at Mimi Sphere. Fast and reliable online shopping with secure payment options.",
   alternates: {
-    canonical: "https://www.shoppingcart.bd/checkout",
+    canonical: "https://www.mimisphere.com/checkout",
   },
   robots: {
     index: false,

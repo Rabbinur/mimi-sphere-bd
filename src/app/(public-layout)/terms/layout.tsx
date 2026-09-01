@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | Shopping Cart BD",
-  description: "Read the Terms & Conditions of Shopping Cart BD. By using our services, you agree to these professional guidelines, including product pricing, delivery, and refund policies in accordance with Bangladesh laws.",
-  keywords: ["terms and conditions BD", "e-commerce terms Bangladesh", "shopping cart bd terms", "legal agreement"],
+  title: "Terms & Conditions | Mimi Sphere",
+  description: "Read the Terms & Conditions of Mimi Sphere. Product pricing, delivery, and customer care policies.",
+  keywords: ["terms and conditions", "mimi sphere terms", "legal agreement"],
   alternates: {
-    canonical: "https://www.shoppingcart.bd/terms",
+    canonical: "https://www.mimisphere.com/terms",
   },
 };
 

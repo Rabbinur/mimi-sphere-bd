@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const category = slug?.[0];
 
-    const baseUrl = "https://www.shoppingcart.bd/shop";
+    const baseUrl = "https://www.mimisphere.com/shop";
 
     const formatName = (text: string) =>
         text
@@ -25,19 +25,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     // 🎯 SEO-optimized titles
     const title = category
-        ? `${name} Bangladesh | Korean Cosmetics & Bags BD`
-        : "Korean Cosmetics & Trendy Bags Bangladesh | Shopping Cart BD";
+        ? `${name} | Mimi Sphere`
+        : "Shop All Products | Mimi Sphere";
 
     // 💖 Conversion-focused descriptions
     const description = category
-        ? `Shop ${name.toLowerCase()} in Bangladesh 💖 Trendy Korean cosmetics, cute bags & aesthetic accessories for girls. Affordable & authentic. Order now!`
-        : "Shop Korean cosmetics, trendy bags & cute accessories in Bangladesh 💖 Perfect for girls who love aesthetic style. 100% authentic. Order today!";
+        ? `Shop ${name.toLowerCase()} at Mimi Sphere. Authentic Korean cosmetics, cute bags & aesthetic lifestyle essentials. Everything you need, all in one place.`
+        : "Explore curated collections of cosmetics, trendy bags & lifestyle essentials at Mimi Sphere. 100% authentic products.";
 
     return {
         title,
         description,
 
         keywords: [
+            "mimi sphere",
             "korean cosmetics bangladesh",
             "korean bags bd",
             "korean skincare bd",
@@ -53,10 +54,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             title,
             description,
             url: canonicalUrl,
-            siteName: "Shopping Cart BD",
+            siteName: "Mimi Sphere",
             images: [
                 {
-                    url: "https://www.shoppingcart.bd/og-image.jpg",
+                    url: "https://www.mimisphere.com/og.png",
                     width: 1200,
                     height: 630,
                     alt: `${name || "Korean Cosmetics & Bags"} Bangladesh`,

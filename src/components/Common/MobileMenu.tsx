@@ -83,11 +83,11 @@ export const MobileMenu = ({ isOpen, setIsOpen }: MobileMenuProps) => {
                 <div className="p-4 border-b flex items-center justify-between">
                     <Image
                         src={"/logo.png"}
-                        alt="Logo"
+                        alt="Mimi Sphere Logo"
                         width={140}
-                        height={35}
+                        height={40}
                         className="object-contain"
-                        style={{ width: 'auto', height: 'auto' }}
+                        style={{ width: 'auto', height: '36px' }}
                         priority
                     />
                 </div>
@@ -97,17 +97,16 @@ export const MobileMenu = ({ isOpen, setIsOpen }: MobileMenuProps) => {
                     <MobileNavLink href="/" label="Home" icon={Home} onClick={() => setIsOpen(false)} />
                     <MobileNavLink href="/shop" label="Shop" icon={ShoppingBag} onClick={() => setIsOpen(false)} />
                     <MobileNavLink href="/categories" label="Categories" icon={ShoppingBag} onClick={() => setIsOpen(false)} />
-                    {/* <MobileNavLink href="/custom-order" label="Custom Order" icon={Sparkles} isNew onClick={() => setIsOpen(false)} /> */}
+                    <MobileNavLink href="/brands" label="Brands" icon={ShoppingBag} onClick={() => setIsOpen(false)} />
                     <MobileNavLink href="/track-order" label="Track Order" icon={PackageCheck} onClick={() => setIsOpen(false)} />
-                    {/* <MobileNavLink href="/contact" label="Contact Us" icon={MessageSquare} onClick={() => setIsOpen(false)} /> */}
-                    <MobileNavLink href="/shop/pre-order" label="Pre Order" icon={Sandwich} onClick={() => setIsOpen(false)} />
+                    <MobileNavLink href="/shop/pre-order" label="Pre Order" icon={Sandwich} isNew onClick={() => setIsOpen(false)} />
 
                     <Separator className="my-6 opacity-50" />
 
                     <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Contact Info</p>
                     <div className="px-3 space-y-4">
                         <ContactItem icon={Phone} label={cmsData?.company?.phone || "+880 1722597565"} type="tel" />
-                        <ContactItem icon={Mail} label={cmsData?.company?.email || "info@shoppingcart.bd"} type="mail" />
+                        <ContactItem icon={Mail} label={cmsData?.company?.email || "support@mimisphere.com"} type="mail" />
                     </div>
                 </div>
 

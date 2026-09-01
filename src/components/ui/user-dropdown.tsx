@@ -232,11 +232,11 @@ export default function UserDropdown(): JSX.Element | null {
                     ) : (
                         <div className="p-5 flex flex-col gap-3">
                             <div className="text-center mb-2">
-                                <h3 className="font-bold text-slate-800">
-                                    Welcome to Shopping Cart BD
+                                <h3 className="font-bold text-[#002447]">
+                                    Welcome to Mimi Sphere
                                 </h3>
                                 <p className="text-xs text-slate-500">
-                                    Sign in to manage your orders and profile
+                                    Sign in to manage your orders, wishlist, and profile
                                 </p>
                             </div>
                             <Link

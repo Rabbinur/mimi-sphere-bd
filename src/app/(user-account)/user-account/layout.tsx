@@ -6,14 +6,14 @@ import Header from "@/components/Common/Header";
 import { MobileNav } from "@/components/ui/mobile-nav";
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "User dashboard and account management.",
+  title: "User Account | Mimi Sphere",
+  description: "User dashboard and account management at Mimi Sphere.",
   robots: {
     index: false,
     follow: false,
   },
   alternates: {
-    canonical: "https://www.shoppingcart.bd/user-account",
+    canonical: "https://www.mimisphere.com/user-account",
   },
 };
 

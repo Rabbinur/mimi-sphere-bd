@@ -19,9 +19,9 @@ const NavLinks = () => {
   const links = [
     { href: "/shop", label: "Shop", isNew: false },
     { href: "/categories", label: "Categories", isNew: false },
+    { href: "/brands", label: "Brands", isNew: false },
     { href: "/contact", label: "Contact", isNew: false },
     { href: "/shop/pre-order", label: "Pre Order", isNew: true },
-
   ];
 
   return (
@@ -30,14 +30,14 @@ const NavLinks = () => {
         <Link
           key={link.href}
           href={link.href}
-          className={`text-sm font-semibold transition-colors hover:text-primary flex items-center gap-1 ${pathname === link.href
-            ? "text-primary border-b-2 border-primary"
-            : "text-slate-600"
+          className={`text-sm font-semibold transition-all hover:text-amber-600 flex items-center gap-1.5 py-1 ${pathname === link.href
+            ? "text-[#002447] font-bold border-b-2 border-[#f59e0b]"
+            : "text-slate-700"
             }`}
         >
           {link.label}
           {link.isNew && (
-            <span className="bg-orange-700 text-white px-1.5 py-0.5 text-[9px] font-bold rounded-sm uppercase leading-none">
+            <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-2 py-0.5 text-[9px] font-bold rounded-full uppercase tracking-wider shadow-sm">
               New
             </span>
           )}
@@ -54,24 +54,24 @@ export const MainHeader = ({ children }: { children?: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-t border-primary/10 shadow-sm transition-all duration-300">
-      <div className="container mx-auto px-2 sm:px-4 md:py-2 py-1">
-        <div className="flex items-center justify-between min-h-[50px] md:min-h-[54px] gap-2 md:gap-4">
+    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all duration-300">
+      <div className="container mx-auto px-2 sm:px-4 md:py-2.5 py-1.5">
+        <div className="flex items-center justify-between min-h-[50px] md:min-h-[56px] gap-2 md:gap-6">
 
           {/* Left: Hamburger (Mobile) / Logo+Links (Desktop) */}
           <div className="flex items-center flex-1 md:flex-none gap-2 lg:gap-8">
             <MobileMenu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
 
             {/* Desktop Logo */}
-            <Link href="/" className="hidden md:block shrink-0">
+            <Link href="/" className="hidden md:block shrink-0 transition-transform hover:scale-[1.02]">
               <Image
                 src={"/logo.png"}
-                alt="Shopping Cart BD Logo"
-                width={160}
+                alt="Mimi Sphere Logo"
+                width={170}
                 height={60}
-                quality={75}
+                quality={90}
                 className="object-contain"
-                style={{ width: 'auto', height: 'auto' }}
+                style={{ width: 'auto', height: '48px' }}
                 priority
                 fetchPriority="high"
               />
@@ -87,12 +87,12 @@ export const MainHeader = ({ children }: { children?: React.ReactNode }) => {
             <Link href="/" className="shrink-0">
               <Image
                 src={"/logo.png"}
-                alt="Shopping Cart BD Logo"
+                alt="Mimi Sphere Logo"
                 width={140}
-                height={50}
-                quality={85}
+                height={48}
+                quality={90}
                 className="object-contain"
-                style={{ width: 'auto', height: 'auto' }}
+                style={{ width: 'auto', height: '40px' }}
                 priority
               />
             </Link>

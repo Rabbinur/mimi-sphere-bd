@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Shipping & Delivery Policy | Shopping Cart BD",
-  description: "Experience fast 48-72 hour home delivery across Bangladesh with Shopping Cart BD. No advance charges, easy tracking, and instant return policy.",
-  keywords: ["shipping policy BD", "delivery times Bangladesh", "cash on delivery BD", "home delivery charges Bangladesh"],
+  title: "Shipping & Delivery Policy | Mimi Sphere",
+  description: "Experience fast 48-72 hour home delivery across Bangladesh with Mimi Sphere. No hidden charges, easy tracking, and reliable service.",
+  keywords: ["shipping policy", "delivery times Bangladesh", "cash on delivery BD", "mimi sphere shipping"],
   alternates: {
-    canonical: "https://www.shoppingcart.bd/shipping-policy",
+    canonical: "https://www.mimisphere.com/shipping-policy",
   },
 };
 

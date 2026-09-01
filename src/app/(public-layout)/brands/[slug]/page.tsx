@@ -15,29 +15,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!brand) {
     return {
-      title: "Brand Not Found | Shopping Cart BD",
+      title: "Brand Not Found | Mimi Sphere",
     };
   }
 
-  const title = brand.metaTitle || `${brand.name} Products | Shopping Cart BD`;
-  const description = brand.metaDescription || `Shop authentic products from ${brand.name} on Shopping Cart BD. Find skincare, cosmetics, and more.`;
-  const keywords = brand.metaKeywords ? brand.metaKeywords.split(",").map((k: string) => k.trim()) : [brand.name, "korean cosmetics", "authentic"];
+  const title = brand.metaTitle || `${brand.name} Products | Mimi Sphere`;
+  const description = brand.metaDescription || `Shop authentic products from ${brand.name} at Mimi Sphere. Find skincare, cosmetics, and lifestyle essentials.`;
+  const keywords = brand.metaKeywords ? brand.metaKeywords.split(",").map((k: string) => k.trim()) : [brand.name, "korean cosmetics", "authentic", "mimi sphere"];
 
   return {
     title,
     description,
     keywords,
     alternates: {
-      canonical: `https://www.shoppingcart.bd/brands/${brand.slug}`,
+      canonical: `https://www.mimisphere.com/brands/${brand.slug}`,
     },
     openGraph: {
       title,
       description,
-      url: `https://www.shoppingcart.bd/brands/${brand.slug}`,
-      siteName: "Shopping Cart BD",
+      url: `https://www.mimisphere.com/brands/${brand.slug}`,
+      siteName: "Mimi Sphere",
       images: [
         {
-          url: brand.ogImage || brand.logoUrl || "https://www.shoppingcart.bd/og-image.jpg",
+          url: brand.ogImage || brand.logoUrl || "https://www.mimisphere.com/og.png",
           alt: brand.name,
         },
       ],

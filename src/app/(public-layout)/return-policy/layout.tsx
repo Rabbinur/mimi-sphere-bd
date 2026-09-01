@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Return & Refund Policy | Shopping Cart BD",
-  description: "Experience hassle-free returns and exchanges at Shopping Cart BD. Learn about our easy return process for trendy products in Bangladesh.",
-  keywords: ["return policy BD", "exchange policy Shopping Cart BD", "easy returns Bangladesh", "online shopping BD returns"],
+  title: "Return & Refund Policy | Mimi Sphere",
+  description: "Experience hassle-free returns and exchanges at Mimi Sphere. Easy return process for all our customers in Bangladesh.",
+  keywords: ["return policy BD", "exchange policy Mimi Sphere", "easy returns Bangladesh"],
   alternates: {
-    canonical: "https://www.shoppingcart.bd/return-policy",
+    canonical: "https://www.mimisphere.com/return-policy",
   },
 };
 

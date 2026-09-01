@@ -21,22 +21,22 @@ export default function FloatingCart() {
     return (
         <div className="fixed right-0 top-1/2 -translate-y-1/2 z-[100] hidden md:block cursor-pointer">
             <CartSheet cartItems={cartItems}>
-                <button aria-label="Open shopping cart" className="flex flex-col items-center bg-white shadow-lg rounded-l-lg overflow-hidden border border-slate-200">
+                <button aria-label="Open shopping cart" className="flex flex-col items-center bg-white shadow-2xl rounded-l-2xl overflow-hidden border border-slate-200 hover:scale-105 transition-all">
 
-                    {/* Top: Item Count (Primary Color) */}
-                    <div className="w-14 h-14 bg-primary flex flex-col items-center justify-center text-white">
+                    {/* Top: Item Count (Brand Navy Gradient) */}
+                    <div className="w-14 h-14 bg-gradient-to-b from-[#001f3f] to-[#002b4d] flex flex-col items-center justify-center text-white">
                         <div className="relative mb-0.5">
-                            <ShoppingBag className="w-5 h-5 stroke-[2]" />
+                            <ShoppingBag className="w-5 h-5 text-amber-400 stroke-[2.2]" />
                         </div>
                         <div className="flex flex-col items-center leading-none">
-                            <span className="text-[12px] font-bold">{totalQuantity}</span>
-                            <span className="text-[8px] font-medium opacity-90 uppercase">Items</span>
+                            <span className="text-[12px] font-bold text-amber-400">{totalQuantity}</span>
+                            <span className="text-[8px] font-semibold text-slate-300 uppercase tracking-tighter">Items</span>
                         </div>
                     </div>
 
-                    {/* Bottom: Subtotal (Dark/Compact) */}
-                    <div className="w-14 py-1.5 bg-[#1A1A1A] flex items-center justify-center text-white">
-                        <span className="text-[11px] font-bold flex items-center gap-0.5">
+                    {/* Bottom: Subtotal (Amber Gold Accent) */}
+                    <div className="w-14 py-2 bg-[#071426] flex items-center justify-center text-white border-t border-amber-500/20">
+                        <span className="text-[11px] font-bold flex items-center gap-0.5 text-amber-400">
                             <span className="text-[9px] opacity-80">৳</span>
                             {subtotal.toLocaleString()}
                         </span>

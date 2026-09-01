@@ -2,9 +2,9 @@ import { Metadata } from 'next';
 import CategoriesClient from './CategoriesClient';
 
 export const metadata: Metadata = {
-    title: "Categories | Shopping Cart BD",
-    description: "Browse products by categories on Shopping Cart BD. Find the best deals across various categories.",
-    keywords: ["categories", "shopping", "products", "deals"],
+    title: "Categories | Mimi Sphere",
+    description: "Browse products by categories on Mimi Sphere. Find the best deals across various curated categories.",
+    keywords: ["categories", "shopping", "products", "deals", "mimi sphere"],
     alternates: {
         canonical: "/categories",
     },

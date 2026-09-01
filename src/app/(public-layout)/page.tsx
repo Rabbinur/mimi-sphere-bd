@@ -44,9 +44,9 @@ const CategoriesSkeleton = () => (
 
 /* ─── Metadata ─── */
 export const metadata: Metadata = {
-  title: "Korean Cosmetics & Trendy Bags Bangladesh | Shopping Cart BD",
-  description: "Shop trendy Korean cosmetics, cute bags & aesthetic accessories in Bangladesh 💖 100% authentic products for girls.",
-  alternates: { canonical: "https://www.shoppingcart.bd" },
+  title: "Mimi Sphere | Everything You Need, All in One Place",
+  description: "Shop trendy Korean cosmetics, premium lifestyle essentials & aesthetic accessories in Bangladesh. 100% authentic products at Mimi Sphere.",
+  alternates: { canonical: "https://www.mimisphere.com" },
 };
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;

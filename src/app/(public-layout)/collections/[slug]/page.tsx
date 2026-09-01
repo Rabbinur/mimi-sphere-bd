@@ -14,29 +14,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!collection) {
     return {
-      title: "Collection Not Found | Shopping Cart BD",
+      title: "Collection Not Found | Mimi Sphere",
     };
   }
 
-  const title = collection.metaTitle || `${collection.name} Collection | Shopping Cart BD`;
-  const description = collection.metaDescription || `Explore our curated selection in the ${collection.name} collection on Shopping Cart BD.`;
-  const keywords = collection.metaKeywords ? collection.metaKeywords.split(",").map((k: string) => k.trim()) : [collection.name, "collection", "trendy"];
+  const title = collection.metaTitle || `${collection.name} Collection | Mimi Sphere`;
+  const description = collection.metaDescription || `Explore our curated selection in the ${collection.name} collection at Mimi Sphere.`;
+  const keywords = collection.metaKeywords ? collection.metaKeywords.split(",").map((k: string) => k.trim()) : [collection.name, "collection", "mimi sphere"];
 
   return {
     title,
     description,
     keywords,
     alternates: {
-      canonical: `https://www.shoppingcart.bd/collections/${collection.slug}`,
+      canonical: `https://www.mimisphere.com/collections/${collection.slug}`,
     },
     openGraph: {
       title,
       description,
-      url: `https://www.shoppingcart.bd/collections/${collection.slug}`,
-      siteName: "Shopping Cart BD",
+      url: `https://www.mimisphere.com/collections/${collection.slug}`,
+      siteName: "Mimi Sphere",
       images: [
         {
-          url: collection.ogImage || collection.bannerImage || "https://www.shoppingcart.bd/og-image.jpg",
+          url: collection.ogImage || collection.bannerImage || "https://www.mimisphere.com/og.png",
           alt: collection.name,
         },
       ],

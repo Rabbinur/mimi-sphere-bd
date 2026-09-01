@@ -19,31 +19,31 @@ const hindSiliguri = Hind_Siliguri({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.shoppingcart.bd"),
+  metadataBase: new URL("https://www.mimisphere.com"),
 
   title: {
-    default: "Shopping Cart BD | Your One-Stop E-commerce Destination in Bangladesh",
-    template: "%s",
+    default: "Mimi Sphere | Everything You Need, All in One Place",
+    template: "%s | Mimi Sphere",
   },
 
   description:
-    "E- commerce Bangladesh, Online Shopping BD, Shopping Cart BD, Electronics BD, Lifestyle Products Bangladesh",
+    "Mimi Sphere — Premium lifestyle, Korean cosmetics, trendy fashion, and global curated collections. Everything you need, all in one place in Bangladesh.",
 
   alternates: {
     canonical: "/",
   },
 
   openGraph: {
-    title: "Shopping Cart BD | Premium Online Shopping in Bangladesh",
-    description: "Shop the best products at Shopping Cart BD...",
-    url: "https://www.shoppingcart.bd",
-    siteName: "Shopping Cart BD",
+    title: "Mimi Sphere | Everything You Need, All in One Place",
+    description: "Discover authentic Korean cosmetics, trendy bags, and curated lifestyle essentials at Mimi Sphere.",
+    url: "https://www.mimisphere.com",
+    siteName: "Mimi Sphere",
     images: [
       {
-        url: "/og.png",
+        url: "/logo.png",
         width: 1200,
         height: 630,
-        alt: "Shopping Cart BD",
+        alt: "Mimi Sphere Logo",
       },
     ],
     locale: "en_US",
@@ -52,9 +52,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Shopping Cart BD",
-    description: "Your favorite online shopping destination in Bangladesh.",
-    images: ["/og.png"],
+    title: "Mimi Sphere",
+    description: "Everything You Need, All in One Place — Mimi Sphere",
+    images: ["/logo.png"],
   },
 
   robots: {

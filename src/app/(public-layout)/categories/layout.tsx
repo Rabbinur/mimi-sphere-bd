@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Shop by Category | Shopping Cart BD Fashion & More",
-  description: "Explore our diverse categories from Girls Fashion to Mom & Baby care. Trendy Korean and Chinese products delivered anywhere in Bangladesh.",
-  keywords: ["shop by category BD", "fashion categories BD", "Korean accessories online", "trendy girls fashion", "Shopping Cart BD categories"],
+  title: "Shop by Category | Mimi Sphere",
+  description: "Explore our diverse categories from Fashion, Cosmetics, to Lifestyle essentials. Authentic products delivered anywhere in Bangladesh with Mimi Sphere.",
+  keywords: ["shop by category BD", "fashion categories BD", "Korean accessories online", "Mimi Sphere categories"],
   alternates: {
-    canonical: "https://www.shoppingcart.bd/categories",
+    canonical: "https://www.mimisphere.com/categories",
   },
 };
 

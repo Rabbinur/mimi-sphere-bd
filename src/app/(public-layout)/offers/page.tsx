@@ -17,8 +17,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Special Offers & Hot Deals | Shopping Cart BD",
-  description: "Explore ongoing campaigns, hot sales, and exclusive discounts on Korean cosmetics and trendy bags at Shopping Cart BD.",
+  title: "Special Offers & Hot Deals | Mimi Sphere",
+  description: "Explore ongoing campaigns, hot sales, and exclusive discounts on curated lifestyle essentials and cosmetics at Mimi Sphere.",
   alternates: {
     canonical: "/offers",
   },

@@ -2,8 +2,8 @@ import { TCMS } from "@/types";
 
 export const cmsData: TCMS = {
   company: {
-    name: "Shopping Cart BD",
-    email: "info@shoppingcart.bd",
+    name: "Mimi Sphere",
+    email: "support@mimisphere.com",
     phone: "+8801722597565",
     address: "Dhaka, Bangladesh",
   },

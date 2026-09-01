@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Shopping Cart BD",
-  description: "Learn how Shopping Cart BD collects, uses, and protects your personal information. We are committed to ensuring your privacy and data security in compliance with Bangladesh laws.",
-  keywords: ["privacy policy BD", "data protection Bangladesh", "shopping cart bd privacy", "e-commerce privacy policy"],
+  title: "Privacy Policy | Mimi Sphere",
+  description: "Learn how Mimi Sphere collects, uses, and protects your personal information. We are committed to ensuring your privacy and data security.",
+  keywords: ["privacy policy", "data protection", "mimi sphere privacy"],
   alternates: {
-    canonical: "https://www.shoppingcart.bd/privacy-policy",
+    canonical: "https://www.mimisphere.com/privacy-policy",
   },
 };
 

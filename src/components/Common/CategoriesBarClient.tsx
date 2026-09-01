@@ -82,7 +82,7 @@ const CategoriesBarClient = ({
                     >
                         <button className={cn(
                             "flex h-9 items-center gap-2 rounded-full px-4 text-[13px] font-bold transition-all focus:outline-none mt-1.5",
-                            isOpen ? "bg-gray-100 text-black shadow-inner" : "bg-[#f5f5f5] text-gray-800"
+                            isOpen ? "bg-[#002447] text-white shadow-md" : "bg-slate-100 text-slate-800 hover:bg-slate-200"
                         )}>
                             <svg
                                 width="16"
@@ -90,6 +90,7 @@ const CategoriesBarClient = ({
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
+                                className={isOpen ? "text-amber-400" : "text-slate-700"}
                             >
                                 <path
                                     d="M3 6H21"
@@ -120,31 +121,32 @@ const CategoriesBarClient = ({
                                 isOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 translate-y-2 invisible pointer-events-none"
                             )}
                         >
-                            <div className="flex bg-white border border-gray-100 overflow-hidden min-h-[500px] w-full shadow-xl">
+                            <div className="flex bg-white border border-slate-100 rounded-2xl overflow-hidden min-h-[500px] w-full shadow-2xl">
                                 {/* Sidebar */}
-                                <div className="w-[240px] border-r border-gray-50 py-2 bg-white flex flex-col">
+                                <div className="w-[240px] border-r border-slate-100 py-2 bg-slate-50/50 flex flex-col">
                                     {isLoading ? (
                                         Array(12).fill(0).map((_, i) => (
-                                            <div key={i} className="mx-4 my-3 h-4 w-3/4 animate-pulse rounded bg-gray-50" />
+                                            <div key={i} className="mx-4 my-3 h-4 w-3/4 animate-pulse rounded bg-slate-100" />
                                         ))
                                     ) : (
                                         categories?.map((cat: any) => {
                                             const Icon = cat.icon || ChevronRight;
                                             const isPreOrder = cat.slug === "pre-order";
+                                            const isSelected = pendingCategory?._id === cat._id || hoveredCategory?._id === cat._id;
                                             return (
                                                 <div
                                                     key={cat._id}
                                                     onMouseEnter={() => setPendingCategory(cat)}
                                                     className={cn(
                                                         "flex cursor-pointer items-center gap-3 px-4 py-2.5 text-[14px] font-medium transition-colors",
-                                                        (pendingCategory?._id === cat._id || hoveredCategory?._id === cat._id)
-                                                            ? "bg-gray-50 text-black font-semibold"
-                                                            : "text-gray-600 hover:bg-gray-50",
-                                                        isPreOrder && "text-orange-600"
+                                                        isSelected
+                                                            ? "bg-white text-[#002447] font-bold border-l-4 border-amber-500 shadow-sm"
+                                                            : "text-slate-600 hover:bg-white hover:text-slate-900",
+                                                        isPreOrder && "text-amber-600"
                                                     )}
                                                 >
-                                                    <Icon className={cn("h-4 w-4", (pendingCategory?._id === cat._id || hoveredCategory?._id === cat._id) ? (isPreOrder ? "text-orange-600" : "text-black") : (isPreOrder ? "text-orange-500" : "text-gray-400"))} />
-                                                    <span className={cn("flex-1 truncate", isPreOrder && "font-bold text-orange-600")}>{cat.name}</span>
+                                                    <Icon className={cn("h-4 w-4", isSelected ? (isPreOrder ? "text-amber-600" : "text-[#002447]") : (isPreOrder ? "text-amber-500" : "text-slate-400"))} />
+                                                    <span className={cn("flex-1 truncate", isPreOrder && "font-bold text-amber-600")}>{cat.name}</span>
                                                     <ChevronRight className="h-3 w-3 opacity-30" />
                                                 </div>
                                             )
@@ -156,8 +158,8 @@ const CategoriesBarClient = ({
                                 <div className="flex-1 p-6 overflow-y-auto no-scrollbar max-h-[600px]">
                                     <div className="mb-8">
                                         <div className="flex items-center justify-between mb-4">
-                                            <h3 className="text-[15px] font-bold text-black uppercase tracking-tight">Recommended in {hoveredCategory?.name}</h3>
-                                            {isProductsLoading && <Loader2 className="h-4 w-4 animate-spin text-gray-400" />}
+                                            <h3 className="text-[15px] font-bold text-[#002447] uppercase tracking-tight">Recommended in {hoveredCategory?.name}</h3>
+                                            {isProductsLoading && <Loader2 className="h-4 w-4 animate-spin text-amber-500" />}
                                         </div>
 
                                         {recommendedProducts.length > 0 ? (
@@ -169,7 +171,7 @@ const CategoriesBarClient = ({
                                                         className="flex flex-col items-center gap-3 group cursor-pointer"
                                                         onClick={() => setIsOpen(false)}
                                                     >
-                                                        <div className="relative h-28 w-28 overflow-hidden rounded-xl bg-gray-50 group-hover:scale-105 transition-all duration-300 border border-gray-100 group-hover:border-black/5 group-hover:shadow-lg">
+                                                        <div className="relative h-28 w-28 overflow-hidden rounded-2xl bg-slate-50 group-hover:scale-105 transition-all duration-300 border border-slate-100 group-hover:border-amber-400/40 group-hover:shadow-lg">
                                                             <Image
                                                                 src={product.thumbnail || "/logo.png"}
                                                                 alt={product.product_title}
@@ -179,25 +181,25 @@ const CategoriesBarClient = ({
                                                             />
                                                         </div>
                                                         <div className="flex flex-col items-center gap-1">
-                                                            <span className="text-[11px] font-medium text-center text-gray-600 leading-tight group-hover:text-black line-clamp-2 px-1 transition-colors">
+                                                            <span className="text-[11px] font-medium text-center text-slate-700 leading-tight group-hover:text-[#002447] line-clamp-2 px-1 transition-colors">
                                                                 {product.product_title}
                                                             </span>
-                                                            <span className="text-[13px] font-bold text-black">৳{product.product_price}</span>
+                                                            <span className="text-[13px] font-bold text-amber-600">৳{product.product_price}</span>
                                                         </div>
                                                     </Link>
                                                 ))}
                                             </div>
                                         ) : !isProductsLoading ? (
-                                            <div className="h-40 flex items-center justify-center text-gray-400 text-sm italic border-2 border-dashed border-gray-50 rounded-xl">
+                                            <div className="h-40 flex items-center justify-center text-slate-400 text-sm italic border-2 border-dashed border-slate-100 rounded-2xl">
                                                 No products found in this category
                                             </div>
                                         ) : (
                                             <div className="grid grid-cols-5 xl:grid-cols-6 gap-x-4 gap-y-8">
                                                 {Array(18).fill(0).map((_, i) => (
                                                     <div key={i} className="flex flex-col items-center gap-3 animate-pulse">
-                                                        <div className="h-28 w-28 rounded-xl bg-gray-50" />
-                                                        <div className="h-3 w-20 bg-gray-50 rounded" />
-                                                        <div className="h-4 w-12 bg-gray-50 rounded" />
+                                                        <div className="h-28 w-28 rounded-2xl bg-slate-100" />
+                                                        <div className="h-3 w-20 bg-slate-100 rounded" />
+                                                        <div className="h-4 w-12 bg-slate-100 rounded" />
                                                     </div>
                                                 ))}
                                             </div>
@@ -218,11 +220,11 @@ const CategoriesBarClient = ({
                                     key={cat._id}
                                     href={`/shop/${cat.slug}`}
                                     className={cn(
-                                        "whitespace-nowrap text-[13px] md:text-[14px] font-medium transition-all hover:text-primary",
+                                        "whitespace-nowrap text-[13px] md:text-[14px] font-medium transition-all hover:text-amber-600",
                                         isPreOrder
-                                            ? "bg-orange-50 text-orange-600 px-3 py-1 rounded-full border border-orange-100 font-bold hover:bg-orange-100"
-                                            : "text-gray-800",
-                                        activeCategory === cat.slug ? "text-primary font-bold" : ""
+                                            ? "bg-amber-50 text-amber-700 px-3 py-1 rounded-full border border-amber-200/80 font-bold hover:bg-amber-100"
+                                            : "text-slate-700",
+                                        activeCategory === cat.slug ? "text-[#002447] font-bold border-b-2 border-amber-500 pb-0.5" : ""
                                     )}
                                 >
                                     {cat.name}

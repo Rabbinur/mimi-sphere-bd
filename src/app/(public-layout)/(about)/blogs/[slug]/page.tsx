@@ -85,7 +85,7 @@ export async function generateMetadata({
   const blog = await getBlog(slug);
   if (!blog) return { title: "Blog Not Found" };
 
-  const title = `${blog.title} | Shopping Cart BD`;
+  const title = `${blog.title} | Mimi Sphere`;
   const plainText = blog.content.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
   const description = truncateText(plainText, 155);
 
