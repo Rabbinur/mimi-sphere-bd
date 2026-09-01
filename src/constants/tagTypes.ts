@@ -1,0 +1,16 @@
+export const tagTypes = [
+  "auth",
+  "products",
+  "order",
+  "File",
+  "Invoice",
+  "CMS",
+  "CustomOrder",
+  "billing-invoice",
+  "coupons",
+  "address",
+  "brands",
+  "Cart",
+  "Review",
+  "Product",
+] as const;
