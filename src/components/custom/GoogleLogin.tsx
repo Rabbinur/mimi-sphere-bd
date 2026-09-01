@@ -1,3 +1,4 @@
+import { setTokens } from '@/utils/authCookie';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -5,12 +6,12 @@ import { toast } from 'sonner';
 import { userLogin } from '../Authentication/userLogin';
 import { useAppDispatch } from '../Redux/hooks';
 import { setToken, setUserInfo } from '../Redux/Slice/authSlice';
-import { setTokens } from '@/utils/authCookie';
 
 const GoogleLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
     const googleLoginBtn = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
@@ -84,7 +85,12 @@ const GoogleLogin = () => {
         <button
             disabled={isLoading}
             onClick={() => {
-                if (!isLoading) googleLoginBtn();
+                if (isLoading) return;
+                if (!clientId) {
+                    toast.error('Google Client ID is missing. Please set NEXT_PUBLIC_GOOGLE_CLIENT_ID in your .env file.');
+                    return;
+                }
+                googleLoginBtn();
             }}
             type="button"
             className={`w-full flex items-center justify-center py-2.5 px-4 border border-gray-200 bg-white text-gray-700 rounded-xl transition-all duration-200 shadow-sm font-medium ${isLoading ? 'opacity-70 cursor-not-allowed bg-gray-50' : 'hover:bg-gray-50 hover:border-gray-300 hover:scale-[1.01] active:scale-[0.99]'}`}
