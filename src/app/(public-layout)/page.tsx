@@ -19,10 +19,11 @@ const HeroSkeleton = () => (
         <div className="bg-gray-200 animate-pulse rounded-2xl h-[110px] sm:h-[130px] lg:h-full" />
       </div>
     </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3 md:gap-3.5">
-      <div className="bg-gray-200 animate-pulse rounded-2xl h-[125px] sm:h-[135px]" />
-      <div className="bg-gray-200 animate-pulse rounded-2xl h-[125px] sm:h-[135px]" />
-      <div className="bg-gray-200 animate-pulse rounded-2xl h-[125px] sm:h-[135px]" />
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 pt-1">
+      <div className="bg-gray-200 animate-pulse h-[80px] sm:h-[90px]" />
+      <div className="bg-gray-200 animate-pulse h-[80px] sm:h-[90px]" />
+      <div className="bg-gray-200 animate-pulse h-[80px] sm:h-[90px]" />
+      <div className="bg-gray-200 animate-pulse h-[80px] sm:h-[90px]" />
     </div>
   </div>
 );

@@ -2,18 +2,7 @@
 
 import { useGetCmsQuery } from "@/components/Redux/RTK/cmsApi";
 import { TCMS, THeroSlide } from "@/types";
-import {
-  ArrowRight,
-  BookOpen,
-  CheckCircle2,
-  ChevronLeft,
-  ChevronRight,
-  Flame,
-  Smartphone,
-  Sparkles,
-  ToyBrick,
-  Truck
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -43,33 +32,88 @@ const defaultMobileSlides = [
   { image: "/hero/kids-gadget-tablet.jpg", link: "/shop", alt: "Smart Gadgets" },
 ];
 
-const defaultPromoCards = [
+const TRUST_FEATURES = [
   {
-    tag: "Top Priority",
-    title: "Baby Intelligence Books",
-    subtitle: "Phonetic Bangla, English & Arabic Audio Books 📚",
-    image: "/hero/intelligence-book.jpg",
-    link: "/shop",
-    badgeColor: "bg-amber-400 text-slate-950",
-    icon: BookOpen,
+    title: "FASTEST SHIPPING COUNTRYWIDE",
+    icon: (
+      <svg
+        className="w-9 h-9 sm:w-10 sm:h-10 text-slate-500 stroke-[1.15]"
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M4 14h4" />
+        <path d="M2 18h5" />
+        <path d="M5 22h3" />
+        <path d="M9 10h11v11H9z" />
+        <path d="M20 13h5l3 3.5V21h-8" />
+        <circle cx="12" cy="22" r="2.5" />
+        <circle cx="23" cy="22" r="2.5" />
+        <path d="M14.5 13.5c-.8-.8-2-.3-2 .8 0 1.2 2 2.7 2 2.7s2-1.5 2-2.7c0-1.1-1.2-1.6-2-.8z" />
+      </svg>
+    ),
   },
   {
-    tag: "Creative Toys",
-    title: "STEM Toys & Gear Cars",
-    subtitle: "Glowing LED Cars, Pop-up Tents & Puzzles 🧸",
-    image: "/hero/gear-car.jpg",
-    link: "/shop",
-    badgeColor: "bg-blue-600 text-white",
-    icon: ToyBrick,
+    title: "EASY RETURN POLICY",
+    icon: (
+      <svg
+        className="w-9 h-9 sm:w-10 sm:h-10 text-slate-500 stroke-[1.15]"
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M9 16l6-3.5 6 3.5-6 3.5-6-3.5z" />
+        <path d="M9 16v6.5l6 3.5v-6.5" />
+        <path d="M21 16v6.5l-6 3.5" />
+        <path d="M22 10a5 5 0 0 0-8.5-3.5L14 8" />
+        <path d="M14 4.5v3.5h3.5" />
+      </svg>
+    ),
   },
   {
-    tag: "Arts & Drawing",
-    title: "Creative Arts & Drawing Tech",
-    subtitle: "Eye-Safe LCD Writing Pads & Art Kits 🎨",
-    image: "/hero/kids-gadget-tablet.jpg",
-    link: "/shop",
-    badgeColor: "bg-emerald-600 text-white",
-    icon: Smartphone,
+    title: "PREMIUM QUALITY PRODUCT",
+    icon: (
+      <svg
+        className="w-9 h-9 sm:w-10 sm:h-10 text-slate-500 stroke-[1.15]"
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="16" cy="14" r="8.5" strokeDasharray="2 2" />
+        <path d="M16 9l1.5 3.2 3.5.5-2.5 2.4.6 3.5L16 17l-3.1 1.6.6-3.5-2.5-2.4 3.5-.5z" />
+        <path d="M14 22.5l2 4 2-4" />
+        <path d="M11 22l1 4.5" />
+        <path d="M21 22l-1 4.5" />
+      </svg>
+    ),
+  },
+  {
+    title: "ONLINE SUPPORT 24/7",
+    icon: (
+      <svg
+        className="w-9 h-9 sm:w-10 sm:h-10 text-slate-500 stroke-[1.15]"
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M6 16v-2a10 10 0 0 1 20 0v2" />
+        <rect x="4" y="16" width="3.5" height="7" rx="1.5" />
+        <rect x="24.5" y="16" width="3.5" height="7" rx="1.5" />
+        <path d="M25 21v1a3 3 0 0 1-3 3h-3" />
+        <path d="M11 13h10a1.5 1.5 0 0 1 1.5 1.5v3.5a1.5 1.5 0 0 1-1.5 1.5h-4l-3 2.5V19.5h-1.5A1.5 1.5 0 0 1 9.5 18v-3.5A1.5 1.5 0 0 1 11 13z" />
+        <circle cx="13" cy="16" r=".8" fill="currentColor" />
+        <circle cx="16" cy="16" r=".8" fill="currentColor" />
+        <circle cx="19" cy="16" r=".8" fill="currentColor" />
+      </svg>
+    ),
   },
 ];
 
@@ -92,7 +136,6 @@ const HeroSlider = ({ initialCmsData }: HeroSliderProps) => {
   const isLoading = !initialCmsData && isQueryLoading;
 
   const rawDesktop = cmsData?.heroSliderDesktop?.length ? cmsData.heroSliderDesktop : defaultDesktopSlides;
-  // If backend returns legacy shopping-cart-bd banners, replace with our official high-res kids toys & gadgets banners
   const desktopSlides = rawDesktop.map((s) => ({
     ...s,
     image: (s.image?.includes("shopping-cart-bd") || s.image?.includes("korean") || s.image?.includes("multi-items"))
@@ -308,108 +351,25 @@ const HeroSlider = ({ initialCmsData }: HeroSliderProps) => {
 
       </div>
 
-      {/* 🌟 2. 🎁 ৩-কলামের কমপ্যাক্ট প্রোমো বেন্টো গ্রিড (3-Card Bento Grid) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3 md:gap-3.5">
-        {defaultPromoCards.map((card, idx) => {
-          const Icon = card.icon || ToyBrick;
-          return (
-            <Link
-              key={idx}
-              href={card.link}
-              className="relative overflow-hidden rounded-2xl p-3.5 sm:p-4 md:p-4.5 bg-white border border-slate-200/80 shadow-sm hover:shadow-md hover:border-amber-400/50 hover:-translate-y-0.5 transition-all duration-300 group flex items-center justify-between min-h-[125px] sm:min-h-[135px]"
-            >
-              {/* Left Content */}
-              <div className="flex-1 pr-2 flex flex-col justify-between h-full z-10">
-                <div>
-                  <div className="flex items-center gap-1.5 mb-1.5">
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${card.badgeColor}`}>
-                      <Sparkles className="w-2 h-2" />
-                      {card.tag}
-                    </span>
-                  </div>
-
-                  <h3 className="text-xs sm:text-sm font-black text-slate-900 leading-tight group-hover:text-[#002447] transition-colors">
-                    {card.title}
-                  </h3>
-                  <p className="text-[10px] text-slate-400 font-medium mt-0.5 leading-snug line-clamp-1">
-                    {card.subtitle}
-                  </p>
-                </div>
-
-                <div className="mt-2.5 flex items-center gap-1 text-[11px] font-bold text-[#002447] group-hover:text-amber-600 transition-colors">
-                  <span>Explore Now</span>
-                  <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                </div>
-              </div>
-
-              {/* Right Side: Slightly Rotated Product Image */}
-              <div className="relative w-18 h-18 sm:w-20 sm:h-20 md:w-24 md:h-24 shrink-0 z-10 flex items-center justify-center">
-                <div className="relative w-full h-full rounded-xl overflow-hidden shadow-sm border border-slate-100 rotate-6 group-hover:rotate-0 group-hover:scale-105 transition-all duration-300 ease-out bg-slate-50">
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    fill
-                    sizes="(max-width: 768px) 80px, 100px"
-                    className="object-cover"
-                  />
-                </div>
-
-                {/* Floating micro icon */}
-                <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-md bg-white border border-slate-100 shadow-sm flex items-center justify-center text-slate-600 group-hover:bg-[#002447] group-hover:text-amber-400 transition-colors z-20">
-                  <Icon className="w-2.5 h-2.5" />
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* 🌟 3. 🛡️ ৪টি ট্রাস্ট পিলার (4 Trust Pillars Bar) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5 pt-0.5">
-        <PerkBadge
-          icon={<ToyBrick className="w-3.5 h-3.5 text-amber-500" />}
-          title="Creative Learning"
-          desc="STEM & Montessori Toys"
-        />
-        <PerkBadge
-          icon={<Smartphone className="w-3.5 h-3.5 text-blue-500" />}
-          title="Child-Safe Tech"
-          desc="100% Tested Smart Gadgets"
-        />
-        <PerkBadge
-          icon={<Truck className="w-3.5 h-3.5 text-emerald-500" />}
-          title="Fast Delivery"
-          desc="48-72h in All 64 Districts"
-        />
-        <PerkBadge
-          icon={<CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />}
-          title="Inspect Before Pay"
-          desc="Cash on Delivery Available"
-        />
+      {/* 🌟 2. 🛡️ ৪টি ট্রাস্ট ও সার্ভিস বক্স (Exact Match to Screenshot) */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 pt-1">
+        {TRUST_FEATURES.map((item, idx) => (
+          <div
+            key={idx}
+            className="bg-white border border-slate-200/80 rounded-none sm:rounded-sm py-5 px-3 sm:py-6 sm:px-4 md:py-7 md:px-5 flex flex-col items-center justify-center text-center shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-slate-300 hover:shadow-sm transition-all"
+          >
+            <div className="mb-2.5 sm:mb-3 flex items-center justify-center">
+              {item.icon}
+            </div>
+            <h3 className="text-[10px] sm:text-[11px] md:text-[11.5px] font-semibold tracking-[0.14em] sm:tracking-[0.18em] text-slate-500 uppercase leading-snug">
+              {item.title}
+            </h3>
+          </div>
+        ))}
       </div>
 
     </div>
   );
 };
-
-const PerkBadge = ({
-  icon,
-  title,
-  desc,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-}) => (
-  <div className="flex items-center gap-2 p-2 sm:p-2.5 rounded-xl bg-white border border-slate-100 shadow-sm">
-    <div className="w-7 h-7 rounded-lg bg-slate-50 flex items-center justify-center shrink-0">
-      {icon}
-    </div>
-    <div className="min-w-0">
-      <h3 className="text-[11px] sm:text-xs font-bold text-slate-800 truncate leading-tight">{title}</h3>
-      <p className="text-[9px] sm:text-[10px] text-slate-400 font-medium truncate leading-tight">{desc}</p>
-    </div>
-  </div>
-);
 
 export default HeroSlider;
