@@ -163,13 +163,14 @@ export default function ProductGallery({ product, selectedImage }: Props) {
                     )}
 
                     {/* Bottom Badge / Frame */}
-                    <div className="absolute bottom-0 left-0 z-10">
+                    <div className="absolute bottom-2 left-2 z-10">
                         <Image
-                            src="/card-frame.png"
-                            alt="badge"
-                            width={160}
-                            height={50}
-                            className="pointer-events-none object-contain group-hover:scale-110 transition-transform duration-500"
+                            src="/logo.png"
+                            alt="Mimi Sphere"
+                            width={130}
+                            height={40}
+                            sizes="130px"
+                            className="pointer-events-none object-contain h-7 md:h-8 w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-500"
                         />
                     </div>
                 </div>

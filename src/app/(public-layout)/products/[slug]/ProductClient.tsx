@@ -43,9 +43,14 @@ type TVariant = {
 
 const normalizeVariantValues = (val: any): Record<string, string> => {
   if (!val) return {};
-  if (val instanceof Map) return Object.fromEntries(val as Map<string, string>);
-  if (typeof val === "object") return val as Record<string, string>;
-  return {};
+  const raw = val instanceof Map ? Object.fromEntries(val as Map<string, string>) : (typeof val === "object" ? val : {});
+  const normalized: Record<string, string> = {};
+  for (const [k, v] of Object.entries(raw)) {
+    if (k && v !== undefined && v !== null) {
+      normalized[String(k).trim()] = String(v).trim();
+    }
+  }
+  return normalized;
 };
 
 const getVariantIdSafe = (v: TVariant, fallbackIndex?: number) =>
@@ -141,9 +146,13 @@ export default function ProductClient({ product }: { product: TProduct }) {
       const vObj = normalizeVariantValues(variant.variant_option_values);
       const sEntries = Object.entries(selectedOptions);
       if (sEntries.length === 0) return false;
-      return sEntries.every(
-        ([key, value]) => String(vObj[key]) === String(value),
-      );
+      return sEntries.every(([sKey, sVal]) => {
+        const matchedKey = Object.keys(vObj).find(
+          (k) => k.toLowerCase() === sKey.toLowerCase()
+        );
+        if (!matchedKey) return false;
+        return String(vObj[matchedKey]).trim().toLowerCase() === String(sVal).trim().toLowerCase();
+      });
     });
   }, [variants, selectedOptions]);
 

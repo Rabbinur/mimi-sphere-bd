@@ -11,7 +11,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL!;
 
 async function getProduct(slug: string) {
   const res = await fetch(`${API_BASE}/products/slug/${slug}`, {
-    next: { revalidate: 3600 },
+    next: { revalidate: 10 },
   });
 
   if (!res.ok) return null;

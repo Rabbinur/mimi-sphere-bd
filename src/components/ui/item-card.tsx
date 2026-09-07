@@ -139,14 +139,14 @@ export function ItemCard({ product }: ItemCardProps) {
                     />
 
                     {/* Bottom Badge / Frame */}
-                    <div className="absolute bottom-0 left-0 z-10">
+                    <div className="absolute bottom-1.5 left-1.5 z-10">
                         <Image
-                            src="/card-frame.png"
-                            alt=""
-                            width={140}
-                            height={40}
-                            sizes="140px"
-                            className="pointer-events-none object-contain group-hover:scale-110 transition-transform duration-500   "
+                            src="/logo.png"
+                            alt="Mimi Sphere"
+                            width={110}
+                            height={34}
+                            sizes="110px"
+                            className="pointer-events-none object-contain h-5 sm:h-6 w-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-500"
                         />
                     </div>
 
