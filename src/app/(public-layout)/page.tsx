@@ -7,6 +7,7 @@ import { fetchData, getCategories, getCMS } from "@/lib/server-api";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import BentoGridSection from "@/components/Pages/HomePage/BentoGridSection";
+import CustomerReviewsSection from "@/components/Pages/HomePage/CustomerReviewsSection";
 
 /* ─── Skeletons ─── */
 const HeroSkeleton = () => (
@@ -89,6 +90,9 @@ export default function Home() {
           <HomeCategorySectionsWrapper />
         </Suspense>
       </div>
+
+      {/* Customer Reviews & Feedback Section */}
+      <CustomerReviewsSection />
     </div>
   );
 }
