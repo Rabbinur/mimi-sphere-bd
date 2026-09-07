@@ -141,24 +141,24 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
           {/* Combined CTA Action Bar */}
           <div className="flex items-center gap-1 mt-auto">
-            {/* Ultra-compact quantity for mobile */}
-            <div className="flex items-center border border-slate-200 rounded-lg h-8 md:h-9 bg-slate-50/50">
+            {/* Ultra-compact quantity */}
+            <div className="flex items-center border border-slate-200 rounded-md h-8 bg-slate-50/60 shrink-0">
               <button
                 onClick={() => setQuantity((q) => Math.max(product.moq || 1, q - 1))}
                 aria-label="Decrease quantity"
-                className="w-6 md:w-8 h-full flex items-center justify-center text-slate-500 hover:text-primary transition-colors"
+                className="w-4 sm:w-5 h-full flex items-center justify-center text-slate-500 hover:text-primary transition-colors"
               >
-                <Minus size={12} />
+                <Minus size={10} />
               </button>
-              <span className="w-4 md:w-6 text-center text-[11px] font-bold text-slate-700">
+              <span className="w-3.5 sm:w-4 text-center text-[11px] font-bold text-slate-700 select-none">
                 {quantity}
               </span>
               <button
                 onClick={() => setQuantity((q) => q + 1)}
                 aria-label="Increase quantity"
-                className="w-6 md:w-8 h-full flex items-center justify-center text-slate-500 hover:text-primary transition-colors"
+                className="w-4 sm:w-5 h-full flex items-center justify-center text-slate-500 hover:text-primary transition-colors"
               >
-                <Plus size={12} />
+                <Plus size={10} />
               </button>
             </div>
 
@@ -169,30 +169,24 @@ const ProductCard = ({ product }: { product: TProduct }) => {
               disabled={!isProductPreOrder(product) && !product?.quantity}
               size="sm"
               aria-label={isProductPreOrder(product) ? "Pre-order product" : "Add to cart"}
-              className="flex-1 h-8 bg-primary hover:bg-primary text-white border-none rounded-md transition-all duration-300"
+              className="flex-1 h-8 px-1 sm:px-2 bg-[#002447] hover:bg-[#071426] text-white font-medium border-none rounded-md shadow-sm transition-all duration-200 min-w-0"
             >
               {isProductPreOrder(product) ? (
-                <div className="flex items-center justify-center gap-2">
-                  <span className="hidden sm:inline text-[15px] font-[400] tracking-wider">
+                <div className="flex items-center justify-center gap-1">
+                  <span className="text-[10px] sm:text-[11px] md:text-xs font-medium whitespace-nowrap">
                     Pre-order
                   </span>
-                  <ShoppingCart className="w-3.5 h-3.5" />
-                  <span className="sm:hidden text-[11px] font-bold uppercase">
-                    Pre
-                  </span>
+                  <ShoppingCart className="w-3 h-3 shrink-0 hidden xl:inline" />
                 </div>
               ) : product?.quantity ? (
-                <div className="flex items-center justify-center gap-2">
-                  <span className="hidden sm:inline text-[15px] font-[400]  tracking-wider">
+                <div className="flex items-center justify-center gap-1">
+                  <span className="text-[10px] sm:text-[11px] md:text-xs font-medium whitespace-nowrap">
                     Add to Cart
                   </span>
-                  <ShoppingCart className="w-3.5 h-3.5" />
-                  <span className="sm:hidden text-[11px] font-bold uppercase">
-                    Add
-                  </span>
+                  <ShoppingCart className="w-3 h-3 shrink-0 hidden xl:inline" />
                 </div>
               ) : (
-                <span className="text-[10px] font-bold uppercase opacity-60">
+                <span className="text-[10px] font-bold uppercase opacity-60 whitespace-nowrap">
                   Out of Stock
                 </span>
               )}
@@ -215,7 +209,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
                   <h4 className="font-bold text-gray-900 text-sm line-clamp-1">
                     {product.product_title}
                   </h4>
-                  <p className="text-primary font-black">৳{price.toFixed(2)}</p>
+                  <p className="text-[#002447] font-black">৳{price.toFixed(2)}</p>
                 </div>
                 <button
                   onClick={() => setIsModalOpen(false)}
@@ -232,7 +226,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
                     key={v._id}
                     onClick={() => setSelectedVariantId(v._id)}
                     className={`text-[13px] p-1.5 md:text-[15px] rounded-md border-2 transition-all font-[400] ${selectedVariantId === v._id
-                      ? "border-primary bg-primary/5 text-primary"
+                      ? "border-[#002447] bg-[#002447]/5 text-[#002447] font-semibold"
                       : "border-gray-100 text-gray-600"
                       }`}
                   >
@@ -243,7 +237,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
               <Button
                 onClick={handleAddToCart}
-                className="w-full h-11 font-black  tracking-widest"
+                className="w-full h-11 font-bold tracking-wider bg-[#002447] hover:bg-[#071426] text-white shadow-sm"
               >
                 Confirm • ৳{(price * quantity).toFixed(2)}
               </Button>

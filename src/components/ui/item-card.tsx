@@ -176,25 +176,25 @@ export function ItemCard({ product }: ItemCardProps) {
                 <div className="flex items-center gap-1 mt-auto">
 
                     {/* Quantity (hidden on mobile) */}
-                    <div className="hidden sm:flex items-center border border-gray-200 rounded-lg h-8 bg-gray-50/50">
+                    <div className="hidden sm:flex items-center border border-gray-200 rounded-md h-8 bg-gray-50/50 shrink-0">
                         <button
                             onClick={() => setQuantity((q) => Math.max(product.moq || 1, q - 1))}
                             aria-label={`Decrease quantity for ${product.product_title}`}
-                            className="w-8 h-full flex items-center justify-center text-gray-500 hover:text-primary transition-colors"
+                            className="w-5 h-full flex items-center justify-center text-gray-500 hover:text-primary transition-colors"
                         >
-                            <Minus size={14} />
+                            <Minus size={10} />
                         </button>
 
-                        <span className="w-5 text-center text-[11px] font-bold text-gray-700">
+                        <span className="w-4 text-center text-[11px] font-bold text-gray-700 select-none">
                             {quantity}
                         </span>
 
                         <button
                             onClick={() => setQuantity((q) => q + 1)}
                             aria-label={`Increase quantity for ${product.product_title}`}
-                            className="w-8 h-full flex items-center justify-center text-gray-500 hover:text-primary transition-colors"
+                            className="w-5 h-full flex items-center justify-center text-gray-500 hover:text-primary transition-colors"
                         >
-                            <Plus size={14} />
+                            <Plus size={10} />
                         </button>
                     </div>
 
@@ -206,35 +206,29 @@ export function ItemCard({ product }: ItemCardProps) {
                         disabled={!isProductPreOrder(product) && !product?.quantity}
                         size="sm"
                         className="w-full sm:flex-1 h-8 
-                   bg-primary hover:bg-primary/90 
-                   text-primary-foreground border-none rounded-xl 
-                   flex items-center justify-center gap-2 
-                   px-2.5 py-2.5 
-                   font-medium no-underline 
-                   transition-colors duration-200"
+                   bg-[#002447] hover:bg-[#071426] 
+                   text-white border-none rounded-md 
+                   flex items-center justify-center gap-1 
+                   px-1.5 sm:px-2 py-1.5 
+                   font-medium no-underline shadow-sm 
+                   transition-all duration-200 min-w-0"
                     >
                         {isProductPreOrder(product) ? (
-                            <div className="flex items-center justify-center gap-2">
-                                <span className="hidden sm:inline text-[15px] font-normal">
+                            <div className="flex items-center justify-center gap-1">
+                                <span className="text-[10px] sm:text-[11px] md:text-xs font-medium whitespace-nowrap">
                                     Pre-order
                                 </span>
-                                <ShoppingCart className="w-3.5 h-3.5" />
-                                <span className="sm:hidden text-[11px] font-bold uppercase">
-                                    Pre
-                                </span>
+                                <ShoppingCart className="w-3 h-3 shrink-0 hidden xl:inline" />
                             </div>
                         ) : product?.quantity ? (
-                            <div className="flex items-center justify-center gap-2">
-                                <span className="hidden sm:inline text-[15px] font-normal tracking-wider">
+                            <div className="flex items-center justify-center gap-1">
+                                <span className="text-[10px] sm:text-[11px] md:text-xs font-medium whitespace-nowrap">
                                     Add to Cart
                                 </span>
-                                <ShoppingCart className="w-3.5 h-3.5" />
-                                <span className="sm:hidden text-[11px] font-bold uppercase">
-                                    Add to Cart
-                                </span>
+                                <ShoppingCart className="w-3 h-3 shrink-0 hidden xl:inline" />
                             </div>
                         ) : (
-                            <span className="text-[10px] font-bold uppercase opacity-60">
+                            <span className="text-[10px] font-bold uppercase opacity-60 whitespace-nowrap">
                                 Out of Stock
                             </span>
                         )}
@@ -263,7 +257,7 @@ export function ItemCard({ product }: ItemCardProps) {
                                     <h4 className="font-bold text-gray-900 text-sm line-clamp-1">
                                         {product.product_title}
                                     </h4>
-                                    <p className="text-primary font-black">৳{price.toFixed(2)}</p>
+                                    <p className="text-[#002447] font-black">৳{price.toFixed(2)}</p>
                                 </div>
                                 <button
                                     onClick={() => setIsModalOpen(false)}
@@ -279,8 +273,8 @@ export function ItemCard({ product }: ItemCardProps) {
                                     <button
                                         key={v._id}
                                         onClick={() => setSelectedVariantId(v._id)}
-                                        className={`text-[13px] md:text-[15px] p-1.5 rounded-md border-2 transition-all  font-[400] ${selectedVariantId === v._id
-                                            ? "border-primary bg-primary/5 text-primary"
+                                        className={`text-[13px] md:text-[15px] p-1.5 rounded-md border-2 transition-all font-[400] ${selectedVariantId === v._id
+                                            ? "border-[#002447] bg-[#002447]/5 text-[#002447] font-semibold"
                                             : "border-gray-100 text-gray-600"
                                             }`}
                                     >
@@ -291,7 +285,7 @@ export function ItemCard({ product }: ItemCardProps) {
 
                             <Button
                                 onClick={handleAddToCart}
-                                className="w-full h-11 font-black  tracking-widest"
+                                className="w-full h-11 font-bold tracking-wider bg-[#002447] hover:bg-[#071426] text-white shadow-sm"
                             >
                                 Confirm • ৳{(price * quantity).toFixed(2)}
                             </Button>
