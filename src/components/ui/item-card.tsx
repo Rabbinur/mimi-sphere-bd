@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { isProductPreOrder } from "@/lib/utils";
+import { getProxiedUrl, isProductPreOrder } from "@/lib/utils";
 import { TProduct } from "@/types";
 import { Eye, Minus, Plus, ShoppingCart, X } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -33,6 +33,13 @@ export function ItemCard({ product }: ItemCardProps) {
         null,
     );
     const [quantity, setQuantity] = useState(product.moq || 1);
+    const [imgSrc, setImgSrc] = useState<string>(
+        () => getProxiedUrl(product?.thumbnail) || "/placeholder.svg"
+    );
+    useEffect(() => {
+        setImgSrc(getProxiedUrl(product?.thumbnail) || "/placeholder.svg");
+    }, [product?.thumbnail]);
+
     useEffect(() => {
         if (isModalOpen) {
             document.body.style.overflow = "hidden";
@@ -130,12 +137,13 @@ export function ItemCard({ product }: ItemCardProps) {
 
                     {/* Product Image */}
                     <Image
-                        src={product.thumbnail || "/placeholder.svg"}
+                        src={imgSrc}
                         alt={product.product_title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 25vw, 220px"
                         quality={85}
                         className="object-contain p-1 transition-transform duration-500 group-hover:scale-110"
+                        onError={() => setImgSrc("/placeholder.svg")}
                     />
 
                     {/* Bottom Badge / Frame */}

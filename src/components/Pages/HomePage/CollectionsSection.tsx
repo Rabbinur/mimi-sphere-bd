@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Layers } from "lucide-react";
 
 interface CollectionCardProps {
     collection: any;
@@ -44,7 +44,7 @@ function CollectionCard({ collection, index }: CollectionCardProps) {
             <div className="relative z-10 h-full flex flex-col justify-end p-4 sm:p-5">
                 {/* Badge */}
                 <div className="flex items-center gap-1.5 mb-2">
-                    <Sparkles className="w-3 h-3 text-amber-400" />
+                    <Layers className="w-3.5 h-3.5 text-amber-400" />
                     <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">
                         Collection
                     </span>

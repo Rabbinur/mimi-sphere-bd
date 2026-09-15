@@ -46,6 +46,8 @@ type TVariant = {
   variant_price: number;
   compare_at_price?: number;
   variant_quantity?: number;
+  sku?: string;
+  barcode?: string;
 };
 
 export function QuickViewModal({
@@ -104,6 +106,12 @@ export function QuickViewModal({
     ? (selectedVariant?.variant_quantity ?? 0)
     : (product?.quantity ?? 0);
 
+  const currentSku =
+    selectedVariant?.sku ||
+    product?.sku ||
+    product?.barcode ||
+    (product?._id ? `MS-${String(product._id).slice(-6).toUpperCase()}` : null);
+
   // Cap quantity when selected variant's stock is lower than current quantity
   useEffect(() => {
     if (selectedVariant && !isProductPreOrder(product)) {
@@ -133,14 +141,14 @@ export function QuickViewModal({
         selected_variant_values: selectedVariant
           ? normalizeValues(selectedVariant.variant_option_values)
           : undefined,
-        sku: product?.sku,
+        sku: selectedVariant?.sku || product?.sku || currentSku || undefined,
       }),
     );
 
     // Track AddToCart event
     if (product) {
       trackPixelEvent("AddToCart", {
-        content_ids: [product.sku || product._id],
+        content_ids: [currentSku || product._id],
         content_type: "product",
         content_name: product.product_title,
         value: currentPrice * quantity,
@@ -339,12 +347,14 @@ export function QuickViewModal({
 
                 {/* Footer Info */}
                 <div className="mt-6 pt-6 border-t border-gray-100 space-y-2">
-                  <div className="flex text-[11px] md:text-xs">
-                    <span className="font-bold text-gray-600 w-20">SKU:</span>
-                    <span className="text-gray-600">
-                      {product?.sku || "N/A"}
-                    </span>
-                  </div>
+                  {currentSku && (
+                    <div className="flex text-[11px] md:text-xs items-center">
+                      <span className="font-bold text-gray-600 w-20">SKU:</span>
+                      <span className="text-gray-700 font-mono font-medium">
+                        {currentSku}
+                      </span>
+                    </div>
+                  )}
                   {product?.product_description ? (
                     <div
                       className="text-[11px] md:text-xs text-gray-500 line-clamp-2 italic"
