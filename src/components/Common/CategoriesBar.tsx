@@ -6,8 +6,8 @@ async function getCategories() {
         const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
         if (!baseUrl) return [];
 
-        const res = await fetch(`${baseUrl}/categories?sub_categories=false`, {
-            next: { revalidate: 3600 }
+        const res = await fetch(`${baseUrl}/categories?sub_categories=true`, {
+            next: { revalidate: 60 }
         });
 
         if (!res.ok) return [];

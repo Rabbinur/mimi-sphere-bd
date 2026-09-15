@@ -2,15 +2,17 @@
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import clsx from "clsx";
-import { Check, Minus, Plus, SlidersHorizontal, X } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, CornerDownRight, Minus, Plus, SlidersHorizontal, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface Category {
     _id: string;
     name: string;
-    count: number;
+    count?: number;
     slug: string;
+    parent_category_id?: string | null;
+    sub_categories?: Category[];
 }
 
 interface FilterValue {
@@ -54,6 +56,7 @@ export default function FilterSidebar({
     const [selectedBrand, setSelectedBrand] = useState(activeBrand);
     const [selectedVariants, setSelectedVariants] = useState<Record<string, string[]>>(activeVariantFilters);
     const [selectedSort, setSelectedSort] = useState(sortValue);
+    const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
         category: true,
         brand: true,
@@ -61,6 +64,31 @@ export default function FilterSidebar({
         ...Object.fromEntries((productFilters?.variants ?? []).map((filter) => [filter.name, true])),
     });
     const [showSidebar, setShowSidebar] = useState(false);
+
+    // Auto-expand the category if it or one of its subcategories is active
+    useEffect(() => {
+        if (!activeCategory || !categories) return;
+
+        categories.forEach((cat) => {
+            const isParentActive = cat.slug === activeCategory;
+            const isChildActive = cat.sub_categories?.some((sub) => sub.slug === activeCategory);
+            if (isParentActive || isChildActive) {
+                setExpandedCategories((prev) => ({
+                    ...prev,
+                    [cat.slug]: true,
+                }));
+            }
+        });
+    }, [activeCategory, categories]);
+
+    const toggleCategoryExpand = (slug: string, e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setExpandedCategories((prev) => ({
+            ...prev,
+            [slug]: !prev[slug],
+        }));
+    };
 
     const toggleSection = useCallback((section: string) => {
         setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -220,7 +248,7 @@ export default function FilterSidebar({
                         className={clsx(
                             "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                             activeCategory === null
-                                ? "bg-primary text-white  shadow-primary/30"
+                                ? "bg-primary text-white shadow-primary/30"
                                 : "text-slate-600 hover:bg-slate-100"
                         )}
                     >
@@ -228,36 +256,83 @@ export default function FilterSidebar({
                         {activeCategory === null && <span className="text-[10px] font-black opacity-70">✓</span>}
                     </button>
 
-                    <div className="space-y-0.5 mt-1 max-h-64 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
-                        {categories?.map((cat) => (
-                            <button
-                                key={cat.slug}
-                                onClick={() => handleCategoryChange(cat.slug)}
-                                className={clsx(
-                                    "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all duration-200",
-                                    activeCategory === cat.slug
-                                        ? "bg-primary/10 text-primary font-semibold"
-                                        : "text-slate-600 hover:bg-slate-100 font-normal"
-                                )}
-                            >
-                                <span className="truncate flex-1 text-left">{cat.name}</span>
-                                <div className="flex items-center gap-1.5 ml-2">
-                                    {cat.count !== undefined && (
-                                        <span className={clsx(
-                                            "text-[10px] font-semibold px-1.5 py-0.5 rounded-full",
-                                            activeCategory === cat.slug
-                                                ? "bg-primary/20 text-primary"
-                                                : "bg-slate-100 text-slate-400"
-                                        )}>
-                                            {cat.count}
-                                        </span>
-                                    )}
-                                    {activeCategory === cat.slug && (
-                                        <span className="text-[10px] font-black text-primary">✓</span>
+                    <div className="space-y-1 mt-1.5 max-h-80 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+                        {categories?.map((cat) => {
+                            const isParentActive = activeCategory === cat.slug;
+                            const hasSubs = Array.isArray(cat.sub_categories) && cat.sub_categories.length > 0;
+                            const isChildActive = hasSubs && cat.sub_categories!.some((sub) => sub.slug === activeCategory);
+                            const isExpanded = expandedCategories[cat.slug] ?? (isParentActive || isChildActive);
+
+                            return (
+                                <div key={cat.slug} className="space-y-0.5">
+                                    {/* Parent Category Row */}
+                                    <div
+                                        className={clsx(
+                                            "w-full flex items-center justify-between rounded-lg text-sm transition-all duration-200 group",
+                                            isParentActive
+                                                ? "bg-primary/10 text-primary font-bold shadow-2xs"
+                                                : isChildActive
+                                                ? "bg-amber-50/50 text-slate-800 font-semibold"
+                                                : "text-slate-600 hover:bg-slate-100 font-medium"
+                                        )}
+                                    >
+                                        <button
+                                            onClick={() => handleCategoryChange(cat.slug)}
+                                            className="flex-1 flex items-center justify-between px-3 py-2 text-left truncate"
+                                        >
+                                            <span className="truncate flex-1">{cat.name}</span>
+                                            {isParentActive && (
+                                                <span className="text-[11px] font-black text-primary ml-1.5">✓</span>
+                                            )}
+                                        </button>
+
+                                        {hasSubs && (
+                                            <button
+                                                type="button"
+                                                onClick={(e) => toggleCategoryExpand(cat.slug, e)}
+                                                className="px-2 py-2 text-slate-400 hover:text-slate-700 transition-colors flex items-center"
+                                                title={isExpanded ? "Collapse subcategories" : "Expand subcategories"}
+                                            >
+                                                {isExpanded ? (
+                                                    <ChevronDown className="w-3.5 h-3.5" />
+                                                ) : (
+                                                    <ChevronRight className="w-3.5 h-3.5" />
+                                                )}
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {/* Indented Subcategories */}
+                                    {hasSubs && isExpanded && (
+                                        <div className="pl-4 pr-1 py-1 space-y-0.5 border-l-2 border-slate-100 ml-3.5 my-0.5">
+                                            {cat.sub_categories!.map((sub) => {
+                                                const isSubActive = activeCategory === sub.slug;
+                                                return (
+                                                    <button
+                                                        key={sub.slug}
+                                                        onClick={() => handleCategoryChange(sub.slug)}
+                                                        className={clsx(
+                                                            "w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs transition-all duration-200",
+                                                            isSubActive
+                                                                ? "bg-amber-500 text-white font-bold shadow-xs"
+                                                                : "text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 font-medium"
+                                                        )}
+                                                    >
+                                                        <div className="flex items-center gap-1.5 truncate flex-1 text-left">
+                                                            <span className={clsx("text-[10px]", isSubActive ? "text-amber-200" : "text-amber-500")}>↳</span>
+                                                            <span className="truncate">{sub.name}</span>
+                                                        </div>
+                                                        {isSubActive && (
+                                                            <span className="text-[10px] font-black text-white ml-1">✓</span>
+                                                        )}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
                                     )}
                                 </div>
-                            </button>
-                        ))}
+                            );
+                        })}
                     </div>
                 </FilterSection>
 

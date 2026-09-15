@@ -50,8 +50,8 @@ export const getProductsByCategory = (categoryId: string, limit = 5) =>
     60,
   );
 
-export const getCategories = () =>
-  fetchData(`${API_BASE}/categories?sub_categories=false`, 120);
+export const getCategories = (sub_categories = true) =>
+  fetchData(`${API_BASE}/categories?sub_categories=${sub_categories}`, 120);
 
 export const getCMS = () => fetchData(`${API_BASE}/cms`, 3600);
 
@@ -66,3 +66,10 @@ export const getBrandBySlug = (slug: string) =>
 
 export const getCollectionBySlug = (slug: string) =>
   fetchData(`${API_BASE}/collections/slug/${slug}`, 60);
+
+export const getNewArrivalProducts = (limit = 12, category = "") =>
+  fetchData(
+    `${API_BASE}/products?sort=latest&limit=${limit}${category ? `&category=${encodeURIComponent(category)}` : ""}`,
+    60
+  );
+

@@ -27,3 +27,9 @@ export const DynamicTrendySection = dynamic(() => import("./TrendySection"), {
 export const DynamicBrandSlider = dynamic(() => import("./BrandSlider"), {
   ssr: false,
 });
+
+export const DynamicNewArrivalsSection = dynamic(() => import("./NewArrivalsSection"), {
+  ssr: false,
+  loading: () => <SectionSkeleton />,
+});
+

@@ -1,9 +1,14 @@
 import CategoriesSection from "@/components/Pages/HomePage/CategoriesSection";
 import HeroSlider from "@/components/Pages/HomePage/HeroSlider";
 import HomeCategorySections from "@/components/Pages/HomePage/HomeCategorySections";
-import { DynamicBrandSlider, DynamicHotDealsSection, DynamicTrendySection } from "@/components/Pages/HomePage/HomeClientSections";
+import {
+  DynamicBrandSlider,
+  DynamicHotDealsSection,
+  DynamicNewArrivalsSection,
+  DynamicTrendySection,
+} from "@/components/Pages/HomePage/HomeClientSections";
 import ProductCardLoading from "@/components/ui/ProductCardLoading";
-import { fetchData, getCategories, getCMS } from "@/lib/server-api";
+import { fetchData, getCategories, getCMS, getNewArrivalProducts } from "@/lib/server-api";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import BentoGridSection from "@/components/Pages/HomePage/BentoGridSection";
@@ -75,6 +80,11 @@ export default function Home() {
       </Suspense>
 
       <div className="bg-gray-50 space-y-4 md:space-y-6 xl:space-y-10 py-4 md:py-6 xl:py-10">
+        {/* 🌟 New Arrivals with Dynamic Category Tabs & Slider */}
+        <Suspense fallback={<SectionSkeleton />}>
+          <NewArrivalsWrapper />
+        </Suspense>
+
         <BentoGridSection />
 
         <Suspense fallback={<SectionSkeleton />}>
@@ -107,6 +117,14 @@ async function HeroSliderWrapper() {
 async function CategoriesSectionWrapper() {
   const categories = await getCategories();
   return <CategoriesSection categories={categories} />;
+}
+
+async function NewArrivalsWrapper() {
+  const [products, categories] = await Promise.all([
+    getNewArrivalProducts(12),
+    getCategories(),
+  ]);
+  return <DynamicNewArrivalsSection initialProducts={products || []} categories={categories || []} />;
 }
 
 async function HotDealsWrapper() {

@@ -27,9 +27,8 @@ async function getCategories() {
   if (!apiBase) return [];
   const baseUrl = apiBase.endsWith("/") ? apiBase.slice(0, -1) : apiBase;
 
-  // ✅ Increase revalidate to 1 hour (3600s) for better performance
-  const res = await fetch(`${baseUrl}/categories`, {
-    next: { revalidate: 3600 },
+  const res = await fetch(`${baseUrl}/categories?sub_categories=true`, {
+    next: { revalidate: 60 },
   });
   if (!res.ok) return [];
   const json = await res.json();

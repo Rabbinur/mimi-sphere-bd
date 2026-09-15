@@ -27,7 +27,7 @@ const CategoriesBarClient = ({
     const hasInitialData = initialCategories && initialCategories.length > 0;
 
     // Fallback query if server side fetch failed or is empty
-    const { data: categoriesData } = useAllCategoryQuery(undefined, {
+    const { data: categoriesData } = useAllCategoryQuery(true, {
         skip: hasInitialData
     });
 
@@ -38,6 +38,7 @@ const CategoriesBarClient = ({
     const activeCategory = searchParams.get("category");
     const [hoveredCategory, setHoveredCategory] = useState<any>(null);
     const [pendingCategory, setPendingCategory] = useState<any>(null);
+    const [hoveredSubCategory, setHoveredSubCategory] = useState<any>(null);
     const [isOpen, setIsOpen] = useState(false);
 
     // Initial hover category
@@ -47,25 +48,29 @@ const CategoriesBarClient = ({
         }
     }, [categories, hoveredCategory]);
 
-    // Debounce hoveredCategory changes
+    // Debounce hoveredCategory changes; reset subcategory when parent changes
     useEffect(() => {
         if (!isOpen) return;
         if (!pendingCategory) return;
 
         const timer = setTimeout(() => {
             setHoveredCategory(pendingCategory);
-        }, 150); // 150ms debounce delay
+            setHoveredSubCategory(null); // reset sub when parent changes
+        }, 150);
 
         return () => clearTimeout(timer);
     }, [pendingCategory, isOpen]);
 
+    // Active slug: subcategory takes priority over parent category
+    const activeSlug = hoveredSubCategory?.slug || hoveredCategory?.slug;
+
     // Determine if we should skip the client-side product query
-    const isInitialCategory = hoveredCategory?.slug === initialCategorySlug;
+    const isInitialCategory = activeSlug === initialCategorySlug;
     const hasInitialProducts = isInitialCategory && initialProducts.length > 0;
 
     const { data: productData, isFetching: isProductsLoading } = useAllProductsQuery(
-        { category: hoveredCategory?.slug, limit: 30 },
-        { skip: !isOpen || !hoveredCategory || hasInitialProducts }
+        { category: activeSlug, limit: 30 },
+        { skip: !isOpen || !activeSlug || hasInitialProducts }
     );
 
     const recommendedProducts = hasInitialProducts ? initialProducts : (productData?.data || []);
@@ -157,13 +162,62 @@ const CategoriesBarClient = ({
                                 {/* Category Content */}
                                 <div className="flex-1 p-6 overflow-y-auto no-scrollbar max-h-[600px]">
                                     <div className="mb-8">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <h3 className="text-[15px] font-bold text-[#002447] uppercase tracking-tight">Recommended in {hoveredCategory?.name}</h3>
+                                        <div className="flex items-center justify-between mb-3">
+                                            <div>
+                                                <h3 className="text-[15px] font-bold text-[#002447] uppercase tracking-tight">
+                                                    {hoveredSubCategory
+                                                        ? `${hoveredSubCategory.name}`
+                                                        : `Recommended in ${hoveredCategory?.name}`
+                                                    }
+                                                </h3>
+                                                <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+                                                    {hoveredSubCategory
+                                                        ? `in ${hoveredCategory?.name} · hover a pill to explore more`
+                                                        : hoveredCategory?.sub_categories?.length > 0
+                                                            ? "Hover a subcategory to explore"
+                                                            : "Top products"
+                                                    }
+                                                </p>
+                                            </div>
                                             {isProductsLoading && <Loader2 className="h-4 w-4 animate-spin text-amber-500" />}
                                         </div>
 
+                                        {/* Subcategories Pills inside Mega Menu */}
+                                        {hoveredCategory?.sub_categories && hoveredCategory.sub_categories.length > 0 && (
+                                            <div className="flex flex-wrap items-center gap-1.5 mb-5 pb-3 border-b border-slate-100">
+                                                {/* "All" pill */}
+                                                <button
+                                                    onMouseEnter={() => setHoveredSubCategory(null)}
+                                                    onClick={() => { setIsOpen(false); window.location.href = `/shop?category=${hoveredCategory.slug}`; }}
+                                                    className={cn(
+                                                        "px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer",
+                                                        !hoveredSubCategory
+                                                            ? "bg-[#002447] text-white"
+                                                            : "bg-slate-100 text-slate-700 hover:bg-[#002447]/10 hover:text-[#002447]"
+                                                    )}
+                                                >
+                                                    All {hoveredCategory.name}
+                                                </button>
+                                                {hoveredCategory.sub_categories.map((sub: any) => (
+                                                    <button
+                                                        key={sub._id}
+                                                        onMouseEnter={() => setHoveredSubCategory(sub)}
+                                                        onClick={() => { setIsOpen(false); window.location.href = `/shop?category=${sub.slug}`; }}
+                                                        className={cn(
+                                                            "px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all cursor-pointer",
+                                                            hoveredSubCategory?._id === sub._id
+                                                                ? "bg-amber-500 text-white border-amber-500 shadow-sm"
+                                                                : "bg-slate-100 text-slate-700 hover:bg-amber-50 hover:text-amber-700 border-slate-200/60"
+                                                        )}
+                                                    >
+                                                        {sub.name}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+
                                         {recommendedProducts.length > 0 ? (
-                                            <div className="grid grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8  gap-2 md:gap-4">
+                                            <div className="grid grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2 md:gap-4">
                                                 {recommendedProducts.map((product: TProduct) => (
                                                     <Link
                                                         key={product._id}
@@ -211,25 +265,28 @@ const CategoriesBarClient = ({
                     </div>
 
 
-                    {/* Horizontal Nav Items */}
-                    <nav className="no-scrollbar flex flex-1 items-center gap-x-6 overflow-x-auto">
+                    {/* Horizontal Nav Items — simple direct links, no dropdown (Mega Menu handles subcategories) */}
+                    <nav className="no-scrollbar flex flex-1 items-center gap-x-5 overflow-x-auto overflow-y-visible">
                         {categories?.slice(0, 10).map((cat: any) => {
                             const isPreOrder = cat.slug === "pre-order";
+
                             return (
                                 <Link
                                     key={cat._id}
-                                    href={`/shop/${cat.slug}`}
+                                    href={`/shop?category=${cat.slug}`}
                                     className={cn(
-                                        "whitespace-nowrap text-[13px] md:text-[14px] font-medium transition-all hover:text-amber-600",
+                                        "whitespace-nowrap text-[13px] md:text-[14px] font-medium transition-all hover:text-amber-600 py-2 flex-shrink-0",
                                         isPreOrder
                                             ? "bg-amber-50 text-amber-700 px-3 py-1 rounded-full border border-amber-200/80 font-bold hover:bg-amber-100"
                                             : "text-slate-700",
-                                        activeCategory === cat.slug ? "text-[#002447] font-bold border-b-2 border-amber-500 pb-0.5" : ""
+                                        activeCategory === cat.slug
+                                            ? "text-[#002447] font-bold border-b-2 border-amber-500 pb-0.5"
+                                            : ""
                                     )}
                                 >
                                     {cat.name}
                                 </Link>
-                            )
+                            );
                         })}
                     </nav>
 
