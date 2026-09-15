@@ -1,24 +1,20 @@
-const TitleBadge = ({ title }: { title: string }) => {
+interface TitleBadgeProps {
+    title: string;
+    className?: string;
+    badgeText?: string;
+}
+
+const TitleBadge = ({ title, className = "", badgeText }: TitleBadgeProps) => {
     return (
-        <div className="flex items-center gap-1.5">
-            <div className="relative">
-
-                {/* subtle ping */}
-                <div className="absolute -top-0.5 -left-0.5 w-5 h-5 md:w-6 md:h-6 bg-primary rounded-full animate-ping opacity-10"></div>
-
-                {/* badge */}
-                <div
-                    className="relative 
-                     bg-primary/10 text-primary 
-                     px-2 py-0.5 md:px-2.5 md:py-1
-                 
-                     text-[10px] md:text-xs lg:text-sm
-                     font-medium"
-                >
-                    {title}
-                </div>
-
-            </div>
+        <div className={`flex items-center gap-2 flex-wrap ${className}`}>
+            <h2 className="text-base sm:text-lg md:text-xl font-black text-slate-900 tracking-tight leading-tight">
+                {title}
+            </h2>
+            {badgeText && (
+                <span className="inline-flex items-center text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                    {badgeText}
+                </span>
+            )}
         </div>
     );
 };

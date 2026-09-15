@@ -109,7 +109,7 @@ export function QuickViewModal({
   const currentSku =
     selectedVariant?.sku ||
     product?.sku ||
-    product?.barcode ||
+    (product as any)?.barcode ||
     (product?._id ? `MS-${String(product._id).slice(-6).toUpperCase()}` : null);
 
   // Cap quantity when selected variant's stock is lower than current quantity
