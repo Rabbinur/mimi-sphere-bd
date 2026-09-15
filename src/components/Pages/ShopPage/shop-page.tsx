@@ -40,13 +40,30 @@ async function getProductFilters() {
   if (!apiBase) return { variants: [], brands: [] };
   const baseUrl = apiBase.endsWith("/") ? apiBase.slice(0, -1) : apiBase;
 
-  // ✅ Add revalidation for filters (rarely change)
   const res = await fetch(`${baseUrl}/products/filters`, {
-    next: { revalidate: 3600 },
+    next: { revalidate: 300 }, // 5 min
   });
   if (!res.ok) return { variants: [], brands: [] };
   const json = await res.json();
   return json.data ?? { variants: [], brands: [] };
+}
+
+// Fetch brands from the dedicated brands collection
+async function getBrands() {
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
+  if (!apiBase) return [];
+  const baseUrl = apiBase.endsWith("/") ? apiBase.slice(0, -1) : apiBase;
+
+  const res = await fetch(`${baseUrl}/brands`, {
+    next: { revalidate: 300 },
+  });
+  if (!res.ok) return [];
+  const json = await res.json();
+  const brands: any[] = json?.data?.brands ?? [];
+  // Return in the same FilterValue shape { value, count }
+  return brands
+    .filter((b: any) => b.isActive !== false)
+    .map((b: any) => ({ value: b.name, slug: b.slug, logoUrl: b.logoUrl, count: 0 }));
 }
 
 async function getProducts({
@@ -140,10 +157,21 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   );
 
   // ⚡ Fast data fetched in parallel
-  const [categories, productFilters] = await Promise.all([
+  const [categories, productFilters, brandsFromCollection] = await Promise.all([
     getCategories(),
     getProductFilters(),
+    getBrands(),
   ]);
+
+  // Merge brands: collection brands take priority, fallback to product-derived brands
+  const mergedBrands = brandsFromCollection.length > 0
+    ? brandsFromCollection
+    : (productFilters.brands ?? []);
+
+  const finalFilters = {
+    ...productFilters,
+    brands: mergedBrands,
+  };
 
   return (
     <>
@@ -155,7 +183,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
               <div className="lg:sticky lg:top-24">
                 <FilterSidebar
                   categories={categories}
-                  productFilters={productFilters}
+                  productFilters={finalFilters}
                   activeCategory={category}
                   activeBrand={brand}
                   activeVariantFilters={variantFilters}

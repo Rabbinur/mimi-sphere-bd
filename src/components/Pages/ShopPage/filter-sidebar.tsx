@@ -18,6 +18,8 @@ interface Category {
 interface FilterValue {
     value: string;
     count: number;
+    logoUrl?: string;
+    slug?: string;
 }
 
 interface ProductFilter {
@@ -363,22 +365,39 @@ export default function FilterSidebar({
                                         key={brand.value}
                                         onClick={() => handleBrandChange(brand.value)}
                                         className={clsx(
-                                            "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all duration-200",
+                                            "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-200",
                                             activeBrand === brand.value
                                                 ? "bg-primary/10 text-primary font-semibold"
                                                 : "text-slate-600 hover:bg-slate-100 font-normal"
                                         )}
                                     >
+                                        {/* Brand Logo */}
+                                        {brand.logoUrl ? (
+                                            <img
+                                                src={brand.logoUrl}
+                                                alt={brand.value}
+                                                className="w-6 h-6 rounded object-contain flex-shrink-0 bg-white border border-slate-100"
+                                            />
+                                        ) : (
+                                            <span className={clsx(
+                                                "w-6 h-6 rounded flex items-center justify-center text-[10px] font-black flex-shrink-0",
+                                                activeBrand === brand.value ? "bg-primary/20 text-primary" : "bg-slate-100 text-slate-400"
+                                            )}>
+                                                {brand.value.charAt(0).toUpperCase()}
+                                            </span>
+                                        )}
                                         <span className="truncate flex-1 text-left">{brand.value}</span>
                                         <div className="flex items-center gap-1.5 ml-2">
-                                            <span className={clsx(
-                                                "text-[10px] font-semibold px-1.5 py-0.5 rounded-full",
-                                                activeBrand === brand.value
-                                                    ? "bg-primary/20 text-primary"
-                                                    : "bg-slate-100 text-slate-400"
-                                            )}>
-                                                {brand.count}
-                                            </span>
+                                            {brand.count > 0 && (
+                                                <span className={clsx(
+                                                    "text-[10px] font-semibold px-1.5 py-0.5 rounded-full",
+                                                    activeBrand === brand.value
+                                                        ? "bg-primary/20 text-primary"
+                                                        : "bg-slate-100 text-slate-400"
+                                                )}>
+                                                    {brand.count}
+                                                </span>
+                                            )}
                                             {activeBrand === brand.value && (
                                                 <span className="text-[10px] font-black text-primary">✓</span>
                                             )}
