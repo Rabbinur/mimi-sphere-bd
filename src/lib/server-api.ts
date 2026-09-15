@@ -65,7 +65,10 @@ export const getBrandBySlug = (slug: string) =>
   fetchData(`${API_BASE}/brands/slug/${slug}`, 60);
 
 export const getCollectionBySlug = (slug: string) =>
-  fetchData(`${API_BASE}/collections/slug/${slug}`, 60);
+  fetchData(`${API_BASE}/collections/slug/${slug}`, 0);
+
+export const getCollections = (limit = 20) =>
+  fetchData(`${API_BASE}/collections?limit=${limit}`, 300);
 
 export const getNewArrivalProducts = (limit = 12, category = "") =>
   fetchData(

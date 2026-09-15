@@ -8,11 +8,12 @@ import {
   DynamicTrendySection,
 } from "@/components/Pages/HomePage/HomeClientSections";
 import ProductCardLoading from "@/components/ui/ProductCardLoading";
-import { fetchData, getCategories, getCMS, getNewArrivalProducts } from "@/lib/server-api";
+import { fetchData, getCategories, getCMS, getCollections, getNewArrivalProducts } from "@/lib/server-api";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import BentoGridSection from "@/components/Pages/HomePage/BentoGridSection";
 import CustomerReviewsSection from "@/components/Pages/HomePage/CustomerReviewsSection";
+import CollectionsSection from "@/components/Pages/HomePage/CollectionsSection";
 
 /* ─── Skeletons ─── */
 const HeroSkeleton = () => (
@@ -85,6 +86,11 @@ export default function Home() {
           <NewArrivalsWrapper />
         </Suspense>
 
+        {/* 🎯 Featured Collections */}
+        <Suspense fallback={null}>
+          <CollectionsSectionWrapper />
+        </Suspense>
+
         <BentoGridSection />
 
         <Suspense fallback={<SectionSkeleton />}>
@@ -140,4 +146,12 @@ async function TrendyWrapper() {
 async function HomeCategorySectionsWrapper() {
   const categories = await getCategories();
   return <HomeCategorySections categories={categories} />;
+}
+
+async function CollectionsSectionWrapper() {
+  const data = await getCollections(10);
+  // API returns { collections: [], total, ... }
+  const collections = data?.collections ?? (Array.isArray(data) ? data : []);
+  if (!collections || collections.length === 0) return null;
+  return <CollectionsSection collections={collections} />;
 }

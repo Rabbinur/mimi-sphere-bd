@@ -49,7 +49,13 @@ export default async function CollectionSlugPage({ params }: Props) {
   const { slug } = await params;
   const collection = await getCollectionBySlug(slug);
 
-  if (!collection || collection.isActive === false) {
+  // Explicitly inactive → 404
+  if (collection && collection.isActive === false) {
+    notFound();
+  }
+
+  // Completely not found → 404
+  if (!collection) {
     notFound();
   }
 
