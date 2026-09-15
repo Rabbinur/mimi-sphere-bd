@@ -7,118 +7,33 @@ import {
     CarouselItem,
     type CarouselApi,
 } from "@/components/ui/carousel";
+import { TCategory } from "@/types";
 import Autoplay from "embla-carousel-autoplay";
-import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Layers, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useMemo, useRef, useState } from "react";
 
-/* ---------------- Types ---------------- */
 export interface TCategoryItem {
     _id: string;
     name: string;
     slug: string;
     img?: string;
     imageUrl?: string;
-    banner?: string;
-    bannerHome?: string;
-    metaTitle?: string;
-    metaDesc?: string;
+    parent_category_id?: string | null;
+    isActive?: boolean;
+    order?: number;
     sortOrder?: number;
 }
 
 interface CategoriesSectionProps {
-    categories?: TCategoryItem[];
+    categories?: (TCategory | TCategoryItem)[];
 }
 
-/* Category Image Fallback Resolver */
-const categoryImageMap: Record<string, string> = {
-    "intelligence": "/hero/intelligence-book.jpg",
-    "handwriting": "/hero/kids-gadget-tablet.jpg",
-    "arts-and-drawing": "/hero/kids-gadget-tablet.jpg",
-    "arts & drawing": "/hero/kids-gadget-tablet.jpg",
-    "books": "/hero/intelligence-book-front.jpg",
-    "toys-and-games": "/hero/gear-car.jpg",
-    "toys & games": "/hero/gear-car.jpg",
-    "baby-care": "/hero/baby-caps.png",
-    "baby care": "/hero/baby-caps.png",
-    "baby-gadgets": "/hero/kids-sunglasses.png",
-    "baby-sunglasses": "/hero/kids-sunglasses.png",
-    "baby-caps": "/hero/baby-caps.png",
-    "play-tents": "/hero/play-tent.jpg",
-    "stem-toys": "/hero/gear-car.jpg",
-    "smart-gadgets": "/hero/kids-gadget-tablet.jpg",
-};
-
-/* Full Essential Category Suite for Mimi Sphere */
-const defaultCategories: TCategoryItem[] = [
-    {
-        _id: "68ca57fee4ae9a29b1603081",
-        name: "Intelligence",
-        slug: "intelligence",
-        img: "/hero/intelligence-book.jpg",
-        sortOrder: 1,
-    },
-    {
-        _id: "68ca57fee4ae9a29b1603077",
-        name: "Handwriting",
-        slug: "handwriting",
-        img: "/hero/kids-gadget-tablet.jpg",
-        sortOrder: 2,
-    },
-    {
-        _id: "691363739b446d4b6f727fad",
-        name: "Arts & Drawing",
-        slug: "arts-and-drawing",
-        img: "/hero/banner-kids-1.jpg",
-        sortOrder: 3,
-    },
-    {
-        _id: "68ca57fee4ae9a29b160306f",
-        name: "Books",
-        slug: "books",
-        img: "/hero/intelligence-book-front.jpg",
-        sortOrder: 4,
-    },
-    {
-        _id: "68ca57fee4ae9a29b1603075",
-        name: "Toys & Games",
-        slug: "toys-and-games",
-        img: "/hero/gear-car.jpg",
-        sortOrder: 5,
-    },
-    {
-        _id: "69d3d4e2e0d6d8c2490892ce",
-        name: "Baby Care",
-        slug: "baby-care",
-        img: "/hero/baby-caps.png",
-        sortOrder: 6,
-    },
-    {
-        _id: "cat-extra-sunglasses",
-        name: "Baby Sunglasses",
-        slug: "baby-sunglasses",
-        img: "/hero/kids-sunglasses.png",
-        sortOrder: 7,
-    },
-    {
-        _id: "cat-extra-caps",
-        name: "Caps & Hats",
-        slug: "baby-caps",
-        img: "/hero/baby-caps.png",
-        sortOrder: 8,
-    },
-    {
-        _id: "cat-extra-tents",
-        name: "Play Tents",
-        slug: "play-tents",
-        img: "/hero/play-tent.jpg",
-        sortOrder: 9,
-    },
-];
+const DEFAULT_CATEGORY_FALLBACK = "/hero/intelligence-book.jpg";
 
 export default function CategoriesSection({ categories }: CategoriesSectionProps) {
-    // 100% Dynamic data from backend API with automatic missing image resolution
+    // Dynamic data from RTK Query if server categories are not provided
     const { data: clientCategoriesResponse, isLoading } = useAllCategoryQuery(undefined, {
         skip: Boolean(categories && categories.length > 0),
     });
@@ -130,25 +45,41 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
     );
 
     const displayCategories = useMemo(() => {
-        const rawList = (categories && categories.length > 0)
-            ? categories
-            : (clientCategoriesResponse?.data && clientCategoriesResponse.data.length > 0)
-                ? clientCategoriesResponse.data
-                : defaultCategories;
+        let rawList: (TCategory | TCategoryItem)[] = [];
 
-        // Ensure missing categories from your catalog (Baby Sunglasses, Caps, Play Tents) are seamlessly included
-        const existingSlugs = new Set(rawList.map((c: TCategoryItem) => c.slug?.toLowerCase()));
-        const missingAdditions = defaultCategories.filter(d => !existingSlugs.has(d.slug.toLowerCase()));
+        if (categories && categories.length > 0) {
+            rawList = categories;
+        } else if (clientCategoriesResponse?.data && Array.isArray(clientCategoriesResponse.data)) {
+            rawList = clientCategoriesResponse.data;
+        } else if (Array.isArray(clientCategoriesResponse)) {
+            rawList = clientCategoriesResponse;
+        }
 
-        return [...rawList, ...missingAdditions];
+        // Filter active categories and main parent categories
+        const filtered = rawList.filter((cat) => {
+            if (cat.isActive === false) return false;
+            // Only keep top-level categories if parent_category_id exists
+            if (cat.parent_category_id) return false;
+            return true;
+        });
+
+        // Sort by order if available
+        return filtered.sort((a, b) => {
+            const orderA = a.order ?? a.sortOrder ?? 0;
+            const orderB = b.order ?? b.sortOrder ?? 0;
+            return orderA - orderB;
+        });
     }, [categories, clientCategoriesResponse]);
 
     const scrollPrev = useCallback(() => api?.scrollPrev(), [api]);
     const scrollNext = useCallback(() => api?.scrollNext(), [api]);
 
+    if (!isLoading && displayCategories.length === 0) {
+        return null;
+    }
+
     return (
         <section className="container mx-auto px-2 sm:px-4 py-3 md:py-6">
-            
             {/* 🌟 Top Header with Controls */}
             <div className="flex items-end justify-between mb-4 md:mb-6">
                 <div>
@@ -159,7 +90,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                         </span>
                     </div>
                     <h2 className="text-base sm:text-lg md:text-2xl font-black text-slate-900 leading-tight">
-                        Explore Kids & Baby Worlds
+                        I am Looking for...
                     </h2>
                 </div>
 
@@ -174,6 +105,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
 
                     {/* Navigation Carousel Buttons */}
                     <button
+                        type="button"
                         onClick={scrollPrev}
                         aria-label="Previous categories"
                         className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white border border-slate-200 hover:border-amber-400 hover:bg-[#002447] hover:text-white flex items-center justify-center text-slate-700 shadow-sm transition-all active:scale-95"
@@ -181,6 +113,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                         <ChevronLeft className="w-4 h-4" />
                     </button>
                     <button
+                        type="button"
                         onClick={scrollNext}
                         aria-label="Next categories"
                         className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white border border-slate-200 hover:border-amber-400 hover:bg-[#002447] hover:text-white flex items-center justify-center text-slate-700 shadow-sm transition-all active:scale-95"
@@ -190,7 +123,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                 </div>
             </div>
 
-            {/* 🌟 NEW DESIGN: Modern Soft Capsule Bubble Cards Carousel */}
+            {/* 🌟 Dynamic Carousel */}
             {isLoading && !displayCategories.length ? (
                 <div className="flex justify-center gap-3 sm:gap-4 overflow-hidden py-2">
                     {Array.from({ length: 7 }).map((_, i) => (
@@ -202,7 +135,7 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                     setApi={setApi}
                     opts={{
                         align: "start",
-                        loop: true,
+                        loop: displayCategories.length > 5,
                     }}
                     plugins={[plugin.current]}
                     onMouseEnter={plugin.current.stop}
@@ -210,12 +143,12 @@ export default function CategoriesSection({ categories }: CategoriesSectionProps
                     className="w-full"
                 >
                     <CarouselContent className="-ml-2.5 sm:-ml-3 md:-ml-4">
-                        {displayCategories.map((category: TCategoryItem, idx: number) => (
+                        {displayCategories.map((category, idx) => (
                             <CarouselItem
                                 key={category._id || idx}
                                 className="pl-2.5 sm:pl-3 md:pl-4 basis-1/3 sm:basis-1/4 md:basis-1/5 lg:basis-[14.28%] xl:basis-[12.5%]"
                             >
-                                <NewModernCategoryCard category={category} index={idx} />
+                                <DynamicCategoryCard category={category} index={idx} />
                             </CarouselItem>
                         ))}
                     </CarouselContent>
@@ -236,35 +169,46 @@ const pastelAccents = [
     "hover:border-sky-400 hover:shadow-sky-500/10",
 ];
 
-const NewModernCategoryCard = ({ category, index }: { category: TCategoryItem; index: number }) => {
-    // Resolve Image: Check category.img, category.imageUrl, or match by slug/name
-    const slugKey = category.slug?.toLowerCase() || "";
-    const nameKey = category.name?.toLowerCase() || "";
-    
-    let imgSrc = category.img || category.imageUrl || "";
-
-    if (!imgSrc || imgSrc.startsWith("data:") || (!imgSrc.startsWith("http") && !imgSrc.startsWith("/"))) {
-        imgSrc = categoryImageMap[slugKey] || categoryImageMap[nameKey] || "/hero/intelligence-book.jpg";
-    }
+const DynamicCategoryCard = ({
+    category,
+    index,
+}: {
+    category: TCategory | TCategoryItem;
+    index: number;
+}) => {
+    const rawImage = category.imageUrl || (category as TCategoryItem).img || "";
+    const [imgSrc, setImgSrc] = useState<string>(rawImage || DEFAULT_CATEGORY_FALLBACK);
+    const [imgError, setImgError] = useState<boolean>(false);
 
     const accentBorder = pastelAccents[index % pastelAccents.length];
 
     return (
         <Link
-            href={`/shop?category=${category.slug}`}
+            href={`/shop?category=${encodeURIComponent(category.slug)}`}
             className={`group cursor-pointer flex flex-col items-center justify-between p-3 sm:p-3.5 rounded-3xl bg-white border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 min-h-[135px] sm:min-h-[155px] ${accentBorder}`}
             aria-label={`Browse category ${category.name}`}
         >
             {/* Floating Bubble Image */}
             <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100/80 p-1 flex items-center justify-center shadow-inner group-hover:bg-amber-50/40 transition-colors">
-                <div className="relative w-full h-full rounded-xl overflow-hidden">
-                    <Image
-                        src={imgSrc}
-                        alt={category.name}
-                        fill
-                        sizes="(max-width: 768px) 70px, 90px"
-                        className="object-cover group-hover:scale-110 group-hover:rotate-2 transition-transform duration-500"
-                    />
+                <div className="relative w-full h-full rounded-xl overflow-hidden flex items-center justify-center bg-slate-100">
+                    {imgSrc && !imgError ? (
+                        <Image
+                            src={imgSrc}
+                            alt={category.name || "Category"}
+                            fill
+                            sizes="(max-width: 768px) 70px, 90px"
+                            className="object-cover group-hover:scale-110 group-hover:rotate-2 transition-transform duration-500"
+                            onError={() => {
+                                if (imgSrc !== DEFAULT_CATEGORY_FALLBACK) {
+                                    setImgSrc(DEFAULT_CATEGORY_FALLBACK);
+                                } else {
+                                    setImgError(true);
+                                }
+                            }}
+                        />
+                    ) : (
+                        <Layers className="w-8 h-8 text-slate-400 group-hover:text-amber-500 transition-colors" />
+                    )}
                 </div>
             </div>
 
@@ -288,33 +232,3 @@ const SkeletonCard = () => (
         <div className="h-3 w-14 bg-slate-200 rounded-md mt-2" />
     </div>
 );
-
-/* =========================================================================
-   ======================= 📜 PREVIOUS DESIGN (SAVED) =======================
-   =========================================================================
-
-const PreviousCategoryCard = ({ category }: { category: TCategoryItem }) => (
-    <Link
-        href={`/shop/${category.slug}`}
-        className="group cursor-pointer flex flex-col items-center gap-2 py-2 transition-all duration-300"
-        aria-label={`Browse category ${category.name}`}
-    >
-        <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden bg-gray-50 border border-gray-100 group-hover:border-primary/50 transition-all shadow-sm group-hover:shadow-md">
-            <Image
-                src={category.imageUrl || category.img || "https://via.placeholder.com/150"}
-                alt={category.name}
-                fill
-                sizes="(max-width: 768px) 80px, 112px"
-                className="object-cover p-1.5 rounded-full group-hover:scale-110 transition-transform duration-500"
-            />
-        </div>
-
-        <div className="text-center">
-            <h3 className="text-[11px] sm:text-[13px] md:text-[14px] font-bold text-gray-800 group-hover:text-primary transition-colors line-clamp-1 px-1">
-                {category.name}
-            </h3>
-        </div>
-    </Link>
-);
-
-========================================================================= */

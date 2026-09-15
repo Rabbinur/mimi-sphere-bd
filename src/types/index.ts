@@ -102,6 +102,8 @@ export interface TCategory {
   parent_category_id: null | string;
   imageUrl: string;
   isActive: boolean;
+  order?: number;
+  sortOrder?: number;
   createdAt: Date;
   updatedAt: Date;
 }
