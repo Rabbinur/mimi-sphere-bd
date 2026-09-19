@@ -152,7 +152,15 @@ async function HomeCategorySectionsWrapper() {
 }
 
 async function CollectionsSectionWrapper() {
-  const data = await getCollections(10);
+  const [data, cmsData] = await Promise.all([
+    getCollections(10, true),
+    getCMS(),
+  ]);
+
+  if (cmsData?.featuredCollections?.isEnabled === false) {
+    return null;
+  }
+
   // API returns { collections: [], total, ... }
   const collections = data?.collections ?? (Array.isArray(data) ? data : []);
   if (!collections || collections.length === 0) return null;
@@ -161,5 +169,10 @@ async function CollectionsSectionWrapper() {
 
 async function BentoGridSectionWrapper() {
   const cmsData = await getCMS();
+
+  if (cmsData?.bentoGrid?.isEnabled === false) {
+    return null;
+  }
+
   return <BentoGridSection bentoGrid={cmsData?.bentoGrid} />;
 }

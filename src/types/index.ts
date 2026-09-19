@@ -233,6 +233,11 @@ export interface TCMS {
   heroSliderMobile: THeroSlide[];
   heroFeatures: THeroFeature[];
   bentoGrid?: TBentoGrid;
+  featuredCollections?: {
+    isEnabled: boolean;
+    title?: string;
+    subtitle?: string;
+  };
 }
 
 export interface TDashboardOverview {

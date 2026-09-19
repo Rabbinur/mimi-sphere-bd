@@ -27,9 +27,12 @@ async function fetchWithTimeout(
 
 export async function fetchData(url: string, revalidate = 60) {
   try {
-    const res = await fetchWithTimeout(url, {
-      next: { revalidate },
-    });
+    const options: RequestInit =
+      revalidate === 0
+        ? { cache: "no-store" }
+        : { next: { revalidate } };
+
+    const res = await fetchWithTimeout(url, options);
 
     if (!res.ok) {
       // console.error("API Error:", res.status, url);
@@ -56,7 +59,7 @@ export const getCategories = (sub_categories = true, isActive = true) =>
     60,
   );
 
-export const getCMS = () => fetchData(`${API_BASE}/cms`, 30);
+export const getCMS = () => fetchData(`${API_BASE}/cms`, 0);
 
 export const getBrands = (page = 1, limit = 40, search = "") =>
   fetchData(
@@ -70,8 +73,11 @@ export const getBrandBySlug = (slug: string) =>
 export const getCollectionBySlug = (slug: string) =>
   fetchData(`${API_BASE}/collections/slug/${slug}`, 0);
 
-export const getCollections = (limit = 20) =>
-  fetchData(`${API_BASE}/collections?limit=${limit}`, 300);
+export const getCollections = (limit = 20, isActive = true) =>
+  fetchData(
+    `${API_BASE}/collections?limit=${limit}${isActive ? "&isActive=true" : ""}`,
+    0,
+  );
 
 export const getNewArrivalProducts = (limit = 12, category = "") =>
   fetchData(
