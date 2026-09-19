@@ -60,7 +60,7 @@ const Footer = () => {
         <div className="absolute top-0 right-0 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10">
+        <div className="container mx-auto px-4 sm:px-6  relative z-10">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="text-center lg:text-left max-w-xl space-y-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
@@ -99,7 +99,7 @@ const Footer = () => {
 
       {/* ── 2. Value Props (4 Pillars of Trust) ─────────────────────────────── */}
       <div className="border-b border-white/5 bg-[#001021]">
-        <div className="container mx-auto px-4 sm:px-6 max-w-6xl py-8">
+        <div className="container mx-auto px-4 sm:px-6  py-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <FeaturePillar
               icon={<ToyBrick className="w-5 h-5 text-amber-400" />}
@@ -126,7 +126,7 @@ const Footer = () => {
       </div>
 
       {/* ── 3. Main Footer Content (4 Columns) ────────────────────────────────── */}
-      <div className="container mx-auto px-4 sm:px-6 max-w-6xl py-12 md:py-16">
+      <div className="container mx-auto px-4 sm:px-6  py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
 
           {/* Col 1: Brand & Mission (4 cols) */}

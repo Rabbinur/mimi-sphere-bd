@@ -50,8 +50,11 @@ export const getProductsByCategory = (categoryId: string, limit = 5) =>
     60,
   );
 
-export const getCategories = (sub_categories = true) =>
-  fetchData(`${API_BASE}/categories?sub_categories=${sub_categories}`, 120);
+export const getCategories = (sub_categories = true, isActive = true) =>
+  fetchData(
+    `${API_BASE}/categories?sub_categories=${sub_categories}${isActive ? "&isActive=true" : ""}`,
+    60,
+  );
 
 export const getCMS = () => fetchData(`${API_BASE}/cms`, 3600);
 

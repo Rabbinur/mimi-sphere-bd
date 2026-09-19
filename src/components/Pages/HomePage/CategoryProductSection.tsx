@@ -1,4 +1,3 @@
-import ProductCardLoading from "@/components/ui/ProductCardLoading";
 import { getProductsByCategory } from "@/lib/server-api";
 import { TCategory, TProduct } from "@/types";
 import {
@@ -13,7 +12,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
 import CategoryProductSlider from "./CategoryProductSlider";
 
 interface CategoryProductSectionProps {
@@ -62,6 +60,12 @@ const CATEGORY_META: Record<
     bg: "bg-rose-50 border-rose-100/80",
     subtitle: "Handcrafted Kashmiri churi & bridal bangles",
   },
+  "hijab-abayas": {
+    icon: Gem,
+    color: "text-rose-600",
+    bg: "bg-rose-50 border-rose-100/80",
+    subtitle: "Handcrafted Kashmiri churi & bridal bangles",
+  },
 };
 
 const DEFAULT_META = {
@@ -91,21 +95,21 @@ const FALLBACK_BANNERS = [
 ];
 
 // 🔹 Sub-component for products fetching (Server Component)
-async function ProductContent({ categoryId }: { categoryId: string }) {
-  const data = await getProductsByCategory(categoryId, 12);
-  const products: TProduct[] = data || [];
-
-  if (products.length === 0) return null;
-
-  return <CategoryProductSlider products={products} />;
-}
-
-const CategoryProductSection = ({
+const CategoryProductSection = async ({
   category,
   bannerPosition = "left",
   index = 0,
 }: CategoryProductSectionProps) => {
+  const data = await getProductsByCategory(category._id, 12);
+  const products: TProduct[] = data || [];
+
+  // 🌟 Empty Category Guard: completely hide section if there are no products
+  if (products.length === 0) {
+    return null;
+  }
+
   const bannerImage =
+    category.bannerImage ||
     CATEGORY_BANNERS[category.slug] ||
     category.imageUrl ||
     FALLBACK_BANNERS[index % FALLBACK_BANNERS.length];
@@ -178,17 +182,7 @@ const CategoryProductSection = ({
 
           {/* Product Slider Container */}
           <div className="flex-1 min-w-0 p-2.5 sm:p-3.5 md:p-4 bg-slate-50/50 flex flex-col justify-center">
-            <Suspense
-              fallback={
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3.5 md:gap-4">
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <ProductCardLoading key={i} />
-                  ))}
-                </div>
-              }
-            >
-              <ProductContent categoryId={category._id} />
-            </Suspense>
+            <CategoryProductSlider products={products} />
           </div>
 
         </div>

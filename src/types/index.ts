@@ -101,6 +101,7 @@ export interface TCategory {
   description: string;
   parent_category_id: null | string;
   imageUrl: string;
+  bannerImage?: string;
   isActive: boolean;
   order?: number;
   sortOrder?: number;

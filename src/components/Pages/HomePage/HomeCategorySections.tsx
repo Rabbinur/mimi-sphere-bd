@@ -7,8 +7,21 @@ interface HomeCategorySectionsProps {
 }
 
 const HomeCategorySections = ({ categories }: HomeCategorySectionsProps) => {
-  // Only main categories
-  const mainCategories = categories?.filter(cat => !cat.parent_category_id) || [];
+  const getCategoryOrder = (category: TCategory) =>
+    typeof category.order === "number" && !isNaN(category.order) && category.order > 0
+      ? category.order
+      : Number.MAX_SAFE_INTEGER;
+
+  // Only active main categories, sorted by order ascending
+  const mainCategories = (
+    categories?.filter((cat) => !cat.parent_category_id && cat.isActive !== false) || []
+  ).sort((a, b) => {
+    const diff = getCategoryOrder(a) - getCategoryOrder(b);
+    if (diff !== 0) return diff;
+    const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return timeA - timeB;
+  });
 
   if (mainCategories.length === 0) return null;
 
