@@ -56,7 +56,7 @@ export const getCategories = (sub_categories = true, isActive = true) =>
     60,
   );
 
-export const getCMS = () => fetchData(`${API_BASE}/cms`, 3600);
+export const getCMS = () => fetchData(`${API_BASE}/cms`, 30);
 
 export const getBrands = (page = 1, limit = 40, search = "") =>
   fetchData(

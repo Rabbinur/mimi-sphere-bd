@@ -91,7 +91,10 @@ export default function Home() {
           <CollectionsSectionWrapper />
         </Suspense>
 
-        <BentoGridSection />
+        {/* 🌟 Best Collections Bento Grid */}
+        <Suspense fallback={null}>
+          <BentoGridSectionWrapper />
+        </Suspense>
 
         <Suspense fallback={<SectionSkeleton />}>
           <HotDealsWrapper />
@@ -154,4 +157,9 @@ async function CollectionsSectionWrapper() {
   const collections = data?.collections ?? (Array.isArray(data) ? data : []);
   if (!collections || collections.length === 0) return null;
   return <CollectionsSection collections={collections} />;
+}
+
+async function BentoGridSectionWrapper() {
+  const cmsData = await getCMS();
+  return <BentoGridSection bentoGrid={cmsData?.bentoGrid} />;
 }
