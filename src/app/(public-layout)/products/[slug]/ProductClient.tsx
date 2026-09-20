@@ -479,43 +479,32 @@ export default function ProductClient({ product }: { product: TProduct }) {
               </Button>
             </div>
           </div>
-               {/* Organized Premium Trust Badges */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 mt-3">
-            {/* 1. Cash On Delivery */}
-            <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl bg-slate-50/90 border border-slate-200/70 hover:bg-slate-100/80 transition-colors shadow-2xs">
-              <div className="w-9 h-9 rounded-xl bg-emerald-100/90 text-emerald-700 flex items-center justify-center shrink-0 shadow-2xs">
-                <Truck className="h-4.5 w-4.5" />
+          {/* Trust Badges */}
+          <div className="grid grid-cols-3 gap-2 mt-4 p-3 bg-slate-50/70 border border-slate-200/60 rounded-xl">
+            <div className="flex flex-col items-center justify-center p-1.5 text-center">
+              <div className="w-8 h-8 rounded-full bg-emerald-100/80 text-emerald-600 flex items-center justify-center mb-1">
+                <Truck className="h-4 w-4" />
               </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-xs font-bold text-slate-900 leading-tight">Cash On Delivery</span>
-                <span className="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">Nationwide inside & outside Dhaka</span>
-              </div>
+              <span className="text-[10px] md:text-xs font-bold text-slate-800">Cash On Delivery</span>
+              <span className="text-[10px] text-slate-600 mt-0.5">Nationwide</span>
             </div>
-
-            {/* 2. Inspect First */}
-            <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl bg-slate-50/90 border border-slate-200/70 hover:bg-slate-100/80 transition-colors shadow-2xs">
-              <div className="w-9 h-9 rounded-xl bg-blue-100/90 text-blue-700 flex items-center justify-center shrink-0 shadow-2xs">
-                <Search className="h-4.5 w-4.5" />
+            <div className="flex flex-col items-center justify-center p-1.5 text-center">
+              <div className="w-8 h-8 rounded-full bg-blue-100/80 text-blue-600 flex items-center justify-center mb-1">
+                <Search className="h-4 w-4" />
               </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-xs font-bold text-slate-900 leading-tight">Inspect First</span>
-                <span className="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">Check product before payment</span>
-              </div>
+              <span className="text-[10px] md:text-xs font-bold text-slate-800">Inspect First</span>
+              <span className="text-[10px] text-slate-600 mt-0.5">Before Payment</span>
             </div>
-
-            {/* 3. Fast Delivery / Pre-order */}
-            <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl bg-slate-50/90 border border-slate-200/70 hover:bg-slate-100/80 transition-colors shadow-2xs">
-              <div className="w-9 h-9 rounded-xl bg-amber-100/90 text-amber-700 flex items-center justify-center shrink-0 shadow-2xs">
-                <Zap className="h-4.5 w-4.5" />
+            <div className="flex flex-col items-center justify-center p-1.5 text-center">
+              <div className="w-8 h-8 rounded-full bg-purple-100/80 text-purple-600 flex items-center justify-center mb-1">
+                <Zap className="h-4 w-4" />
               </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-xs font-bold text-slate-900 leading-tight">
-                  {isProductPreOrder(product) ? "Pre-Order" : "Fast Delivery"}
-                </span>
-                <span className="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">
-                  {isProductPreOrder(product) ? "Secured booking queue" : "Delivered in 24 - 72 Hours"}
-                </span>
-              </div>
+              <span className="text-[10px] md:text-xs font-bold text-slate-800">
+                {isProductPreOrder(product) ? "Pre-Order" : "Fast Delivery"}
+              </span>
+              <span className="text-[10px] text-slate-600 mt-0.5">
+                {isProductPreOrder(product) ? "Secured Booking" : "24 - 72 Hours"}
+              </span>
             </div>
           </div>
 
@@ -524,8 +513,8 @@ export default function ProductClient({ product }: { product: TProduct }) {
             {/* 1. Call Us Now 2-Level Stacked Badge (Brand Navy & Elevated Pill) */}
             <div className="pt-1">
               <a
-                href="tel:+8801719713061"
-                aria-label="Call Mimi Sphere Hotline"
+                href="tel:01719713061"
+                aria-label="Call Mimi Sphere Hotline 01719713061"
                 className="inline-flex items-center relative group select-none cursor-pointer active:scale-95 transition-all"
               >
                 {/* Dark Navy Base Pill */}
@@ -537,7 +526,7 @@ export default function ProductClient({ product }: { product: TProduct }) {
                   <div className="flex flex-col items-center">
                     {/* Elevated Number Card */}
                     <div className="bg-white px-3.5 py-1 rounded-xl shadow-xs border border-slate-100 text-slate-900 font-extrabold text-sm sm:text-[15px] tracking-tight -mt-4 group-hover:-translate-y-0.5 transition-transform">
-                      +880 09639148048
+                      01719713061
                     </div>
                     {/* Subtitle text */}
                     <span className="text-[9px] font-black tracking-widest text-amber-400 uppercase mt-1">

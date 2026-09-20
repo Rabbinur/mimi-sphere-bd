@@ -2,6 +2,7 @@
 
 import {
     ChevronRight,
+    Heart,
     Home,
     Mail,
     MapPin,
@@ -101,6 +102,7 @@ export const MobileMenu = ({ isOpen, setIsOpen }: MobileMenuProps) => {
                     <MobileNavLink href="/brands" label="Brands" icon={ShoppingBag} onClick={() => setIsOpen(false)} />
                     <MobileNavLink href="/track-order" label="Track Order" icon={PackageCheck} onClick={() => setIsOpen(false)} />
                     <MobileNavLink href="/outlets" label="Outlet Stores" icon={MapPin} onClick={() => setIsOpen(false)} />
+                    <MobileNavLink href="/user-account/wishlist" label="My Wishlist" icon={Heart} onClick={() => setIsOpen(false)} />
                     <MobileNavLink href="/shop/pre-order" label="Pre Order" icon={Sandwich} isNew onClick={() => setIsOpen(false)} />
 
                     <Separator className="my-6 opacity-50" />

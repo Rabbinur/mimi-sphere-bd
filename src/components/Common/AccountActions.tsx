@@ -34,11 +34,11 @@ export const AccountActions = ({ cartItems }: { cartItems: any }) => {
                 <span>Offers</span>
             </Link>
 
-            {/* 2. Stores / Outlets Button */}
+            {/* 2. Stores / Outlets Button - Desktop only */}
             <Link
                 href="/outlets"
                 aria-label="View outlet stores"
-                className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full border border-slate-200/90 bg-white hover:border-slate-300 text-slate-700 hover:text-primary transition-all shadow-2xs group"
+                className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full border border-slate-200/90 bg-white hover:border-slate-300 text-slate-700 hover:text-primary transition-all shadow-2xs group"
                 title="Store Locations"
             >
                 <MapPin className="w-4 h-4 text-slate-600 group-hover:text-primary transition-colors" />
@@ -62,11 +62,11 @@ export const AccountActions = ({ cartItems }: { cartItems: any }) => {
                 )}
             </Link>
 
-            {/* 3. Premium Cart Button */}
+            {/* 4. Premium Cart Button */}
             <CartSheet cartItems={cartItems}>
                 <button
                     aria-label="Open Shopping Cart"
-                    className="relative flex items-center gap-2 px-3 py-1.5 md:px-3.5 md:py-2 rounded-full border border-slate-200/90 bg-white hover:border-amber-400 text-[#002447] active:scale-95 transition-all shadow-2xs hover:shadow-sm group"
+                    className="relative flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-3.5 md:py-2 rounded-full border border-slate-200/90 bg-white hover:border-amber-400 text-[#002447] active:scale-95 transition-all shadow-2xs hover:shadow-sm group"
                 >
                     <div className="relative">
                         <ShoppingBag className="w-4 h-4 md:w-5 md:h-5 text-[#002447] group-hover:text-amber-600 transition-colors" />
@@ -82,8 +82,8 @@ export const AccountActions = ({ cartItems }: { cartItems: any }) => {
                 </button>
             </CartSheet>
 
-            {/* 3. User Dropdown (Sign In / Account) */}
-            <div className="shrink-0">
+            {/* 5. User Dropdown (Sign In / Account - Desktop Only, mobile has Account in bottom nav & menu) */}
+            <div className="hidden md:block shrink-0">
                 {mounted && <UserDropdown />}
             </div>
         </div>
