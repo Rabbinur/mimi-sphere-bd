@@ -126,14 +126,10 @@ export default function UserDropdown(): JSX.Element | null {
             ) : (
                 <Link
                     href="/login"
-                    className="flex flex-col items-center justify-center group transition-all"
+                    className="flex items-center gap-1.5 px-3 py-1.5 md:px-3.5 md:py-2 rounded-full border border-slate-200/90 bg-white hover:bg-[#002447] text-slate-700 hover:text-white transition-all duration-200 shadow-2xs hover:shadow-sm group text-xs font-bold"
                 >
-                    <div className="p-1.5 rounded-full group-hover:bg-slate-100 transition-colors">
-                        <UserCircle2 className="w-5 h-5 md:w-6 md:h-6 text-slate-700 stroke-[1.5]" />
-                    </div>
-                    <span className="text-[9px] md:text-[10px] font-bold text-primary/90 uppercase tracking-tight group-hover:text-primary transition-colors">
-                        Sign In
-                    </span>
+                    <User className="w-3.5 h-3.5 text-amber-500 group-hover:text-amber-400 transition-colors" />
+                    <span>Sign In</span>
                 </Link>
             )}
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, ShoppingCart } from "lucide-react";
+import { ShoppingBag, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../Redux/hooks";
@@ -16,47 +16,44 @@ export const AccountActions = ({ cartItems }: { cartItems: any }) => {
         setMounted(true);
     }, []);
 
+    const totalQty = Array.isArray(cartItems)
+        ? cartItems.reduce((acc: number, item: any) => acc + (item.quantity || 1), 0)
+        : 0;
+
     return (
-        <div className="flex items-center gap-1 sm:gap-4">
-            {/* 1. Shop - Hidden on Mobile */}
+        <div className="flex items-center gap-2 sm:gap-3">
+            {/* 1. Offers / Deals Pill - Desktop only */}
             <Link
-                href="/shop"
-                aria-label="Visit our shop"
-                className="hidden md:flex flex-col items-center justify-center group transition-all"
+                href="/offers"
+                aria-label="View special offers"
+                className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50/80 hover:bg-amber-100/80 text-amber-900 border border-amber-200/70 text-xs font-bold transition-all shadow-2xs hover:scale-105"
             >
-                <div className="p-1.5 rounded-full group-hover:bg-slate-100 transition-colors">
-                    <ShoppingBag className="w-5 h-5 md:w-6 md:h-6 text-[#002447] group-hover:text-amber-600 stroke-[1.75]" />
-                </div>
-                <span className="hidden md:block text-[9px] md:text-[10px] font-bold text-[#002447] uppercase tracking-tight group-hover:text-amber-600 transition-colors">
-                    Shop
-                </span>
+                <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-pulse" />
+                <span>Offers</span>
             </Link>
 
-            {/* 2. Cart with Glowing Badge */}
+            {/* 2. Premium Cart Button */}
             <CartSheet cartItems={cartItems}>
                 <button
-                    aria-label="Open Cart"
-                    className="relative flex flex-col items-center justify-center group active:scale-95 transition-all"
+                    aria-label="Open Shopping Cart"
+                    className="relative flex items-center gap-2 px-3 py-1.5 md:px-3.5 md:py-2 rounded-full border border-slate-200/90 bg-white hover:border-amber-400 text-[#002447] active:scale-95 transition-all shadow-2xs hover:shadow-sm group"
                 >
-                    <div className="p-1.5 rounded-full group-hover:bg-slate-100 transition-colors">
-                        <ShoppingCart className="w-5 h-5 md:w-6 md:h-6 text-[#002447] group-hover:text-amber-600 stroke-[1.75]" />
-                        {mounted && cartItems.length > 0 && (
-                            <span className="absolute top-1 right-0.5 flex items-center justify-center h-4 w-4 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-[9px] font-black text-white ring-2 ring-white shadow-sm">
-                                {cartItems.length}
+                    <div className="relative">
+                        <ShoppingBag className="w-4 h-4 md:w-5 md:h-5 text-[#002447] group-hover:text-amber-600 transition-colors" />
+                        {mounted && totalQty > 0 && (
+                            <span className="absolute -top-1.5 -right-2 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-[10px] font-black text-white ring-2 ring-white shadow-xs">
+                                {totalQty}
                             </span>
                         )}
                     </div>
-                    <span className="hidden md:block text-[9px] md:text-[10px] font-bold text-[#002447] uppercase tracking-tight group-hover:text-amber-600 transition-colors">
+                    <span className="hidden sm:inline text-xs font-bold text-slate-800 group-hover:text-[#002447] transition-colors">
                         Cart
                     </span>
                 </button>
             </CartSheet>
 
-            {/* Vertical Divider - Hidden on Mobile */}
-            <div className="h-8 w-[1px] bg-slate-200 mx-1 hidden md:block" />
-
-            {/* User Dropdown - Hidden on Mobile */}
-            <div className="hidden md:block">
+            {/* 3. User Dropdown (Sign In / Account) */}
+            <div className="shrink-0">
                 {mounted && <UserDropdown />}
             </div>
         </div>

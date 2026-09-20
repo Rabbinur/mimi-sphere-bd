@@ -2,16 +2,22 @@
 
 import { getProxiedUrl, isProductPreOrder } from "@/lib/utils";
 import type { TProduct } from "@/types";
-import { Minus, Plus, ShoppingCart, X } from "lucide-react";
+import { Eye, Plus, ShoppingBag, X } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
+import { trackPixelEvent } from "../../lib/pixel";
 import { useAppDispatch } from "../Redux/hooks";
 import { addToCart } from "../Redux/Slice/cartSlice";
 import { Button } from "./button";
-import { trackPixelEvent } from "../../lib/pixel";
+
+const QuickViewModal = dynamic(
+  () => import("./quick-view-modal").then((mod) => mod.QuickViewModal),
+  { ssr: false }
+);
 
 type TVariant = {
   _id: string;
@@ -22,11 +28,11 @@ type TVariant = {
 const ProductCard = ({ product }: { product: TProduct }) => {
   const dispatch = useAppDispatch();
 
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
-    null,
-  );
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(product.moq || 1);
+
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
@@ -49,7 +55,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
   const selectedVariant = useMemo(
     () => variants.find((v) => v._id === selectedVariantId),
-    [variants, selectedVariantId],
+    [variants, selectedVariantId]
   );
 
   const price = selectedVariant
@@ -76,7 +82,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
           ? normalizeVariantValues(selectedVariant.variant_option_values)
           : undefined,
         sku: product.sku,
-      }),
+      })
     );
 
     // Track AddToCart event
@@ -89,113 +95,126 @@ const ProductCard = ({ product }: { product: TProduct }) => {
       quantity,
     });
 
-    toast.success("Added to cart");
+    toast.success("Added to cart", {
+      position: "top-center",
+    });
     setIsModalOpen(false);
     setSelectedVariantId(null);
     setQuantity(product.moq || 1);
   };
 
+  const isPreOrder = isProductPreOrder(product);
+  const isOutOfStock = !isPreOrder && !product?.quantity;
+
   return (
     <>
-      {/* ================= TIGHT PRODUCT CARD ================= */}
-      <div className="group relative bg-white border border-slate-200 rounded-md overflow-hidden flex flex-col h-full hover:shadow-lg transition-all duration-300">
+      {/* ================= MODERN PRODUCT CARD ================= */}
+      <div className="group relative bg-white border border-slate-100 rounded-2xl p-2.5 sm:p-3 flex flex-col h-full hover:shadow-md hover:border-slate-200/80 transition-all duration-300">
+        {/* Top-Left: Discount Badge (matching reference green pill) */}
         {product.discount_percentage !== undefined && product.discount_percentage > 0 && (
-          <span className="absolute top-2 left-2 z-10 text-[9px] font-black bg-primary text-white px-1.5 py-0.5 rounded shadow-sm">
-            {product.discount_percentage}% OFF
-          </span>
+          <div className="absolute top-3 left-3 z-10">
+            <span className="inline-flex items-center text-[10px] sm:text-[11px] font-bold bg-emerald-700 text-white px-2 py-0.5 rounded-full shadow-2xs">
+              {product.discount_percentage}%
+            </span>
+          </div>
         )}
 
-        {/* Thumbnail: Aspect 4/5 often looks better for products */}
+        {/* Top-Right: Professional Quick View (Eye) Button */}
+        <div className="absolute top-3 right-3 z-10">
+          <button
+            onClick={() => setIsQuickViewOpen(true)}
+            aria-label={`Quick view ${product.product_title}`}
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/95 backdrop-blur-sm border border-slate-200/80 shadow-2xs text-slate-600 hover:text-white hover:bg-[#002447] flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 opacity-80 group-hover:opacity-100"
+            title="Quick View"
+          >
+            <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[1.8]" />
+          </button>
+        </div>
+
+        {/* Product Image Area */}
         <Link
           href={`/products/${product.url_handle}`}
-          className="relative aspect-square bg-slate-50 overflow-hidden"
+          className="relative aspect-square w-full bg-slate-50/60 rounded-xl overflow-hidden p-2 flex items-center justify-center mb-2.5"
         >
           <Image
             src={getProxiedUrl(product.thumbnail) || "/placeholder.svg"}
             alt={product.product_title}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
+            className="object-contain p-1 group-hover:scale-105 transition-transform duration-500"
           />
         </Link>
 
         {/* Content Area */}
-        <div className="p-2 md:p-3 flex flex-col flex-grow">
-          <Link href={`/products/${product.url_handle}`}>
-            <h3 className="text-[12px] md:text-sm font-bold line-clamp-2 min-h-[32px] md:min-h-[40px] text-slate-800 leading-tight hover:text-primary transition-colors">
-              {product.product_title}
-            </h3>
-          </Link>
+        <div className="flex flex-col flex-grow justify-between">
+          <div>
+            <Link href={`/products/${product.url_handle}`}>
+              <h3 className="text-xs sm:text-[13px] font-bold text-slate-800 line-clamp-2 leading-snug hover:text-amber-600 transition-colors min-h-[32px] sm:min-h-[36px]">
+                {product.product_title}
+              </h3>
+            </Link>
 
-          {/* Price: Tighter Spacing */}
-          <div className="mt-1 mb-3 flex items-baseline gap-1.5">
-            <span className="text-sm md:text-base font-black text-primary">
-              ৳{Number(price).toFixed(2)}
-            </span>
-            {product.compare_at_price && (
-              <del className="text-[10px] text-gray-600 font-medium">
-                ৳{Number(product.compare_at_price).toFixed(2)}
-              </del>
-            )}
+            {/* Subtitle / Vendor or Unit (like 50 gm in reference) */}
+            <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">
+              {product.product_vendor || "Mimi Sphere"}
+            </p>
           </div>
 
-          {/* Combined CTA Action Bar */}
-          <div className="flex items-center gap-1 mt-auto">
-            {/* Ultra-compact quantity */}
-            <div className="flex items-center border border-slate-200 rounded-md h-8 bg-slate-50/60 shrink-0">
-              <button
-                onClick={() => setQuantity((q) => Math.max(product.moq || 1, q - 1))}
-                aria-label="Decrease quantity"
-                className="w-4 sm:w-5 h-full flex items-center justify-center text-slate-500 hover:text-primary transition-colors"
-              >
-                <Minus size={10} />
-              </button>
-              <span className="w-3.5 sm:w-4 text-center text-[11px] font-bold text-slate-700 select-none">
-                {quantity}
+          {/* Bottom Row: Price on left, Circular '+' button on right */}
+          <div className="flex items-center justify-between mt-2.5 pt-1">
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-1.5">
+              <span className="text-sm sm:text-base font-black text-slate-900">
+                ৳{Number(price).toFixed(0)}
               </span>
-              <button
-                onClick={() => setQuantity((q) => q + 1)}
-                aria-label="Increase quantity"
-                className="w-4 sm:w-5 h-full flex items-center justify-center text-slate-500 hover:text-primary transition-colors"
-              >
-                <Plus size={10} />
-              </button>
+              {product.compare_at_price && product.compare_at_price > price && (
+                <span className="text-[10px] sm:text-[11px] text-slate-400 line-through">
+                  ৳{Number(product.compare_at_price).toFixed(0)}
+                </span>
+              )}
             </div>
 
-            <Button
+            {/* Circular Action Button (Shopping Bag icon for clear eCommerce affordance) */}
+            <button
               onClick={() =>
                 variants.length ? setIsModalOpen(true) : handleAddToCart()
               }
-              disabled={!isProductPreOrder(product) && !product?.quantity}
-              size="sm"
-              aria-label={isProductPreOrder(product) ? "Pre-order product" : "Add to cart"}
-              className="flex-1 h-8 px-1 sm:px-2 bg-[#002447] hover:bg-[#071426] text-white font-medium border-none rounded-md shadow-sm transition-all duration-200 min-w-0"
+              disabled={isOutOfStock}
+              aria-label={
+                isPreOrder
+                  ? "Pre-order product"
+                  : isOutOfStock
+                  ? "Out of stock"
+                  : "Add to cart"
+              }
+              className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-200 shadow-2xs shrink-0 ${
+                isOutOfStock
+                  ? "bg-slate-100 text-slate-300 border border-slate-200 cursor-not-allowed"
+                  : isPreOrder
+                  ? "bg-amber-600 hover:bg-amber-700 text-white hover:scale-105 active:scale-90"
+                  : "bg-[#002447] hover:bg-amber-600 text-white hover:scale-105 active:scale-90"
+              }`}
+              title={
+                isOutOfStock
+                  ? "Out of Stock"
+                  : isPreOrder
+                  ? "Pre-Order"
+                  : "Add to Cart"
+              }
             >
-              {isProductPreOrder(product) ? (
-                <div className="flex items-center justify-center gap-1">
-                  <span className="text-[10px] sm:text-[11px] md:text-xs font-medium whitespace-nowrap">
-                    Pre-order
-                  </span>
-                  <ShoppingCart className="w-3 h-3 shrink-0 hidden xl:inline" />
-                </div>
-              ) : product?.quantity ? (
-                <div className="flex items-center justify-center gap-1">
-                  <span className="text-[10px] sm:text-[11px] md:text-xs font-medium whitespace-nowrap">
-                    Add to Cart
-                  </span>
-                  <ShoppingCart className="w-3 h-3 shrink-0 hidden xl:inline" />
-                </div>
-              ) : (
-                <span className="text-[10px] font-bold uppercase opacity-60 whitespace-nowrap">
-                  Out of Stock
-                </span>
-              )}
-            </Button>
+              <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.2]" />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* ================= COMPACT BOTTOM MODAL ================= */}
+      {/* QuickView Modal Component */}
+      <QuickViewModal
+        isOpen={isQuickViewOpen}
+        onOpenChange={setIsQuickViewOpen}
+        url_handle={product?.url_handle || ""}
+      />
+
+      {/* ================= COMPACT BOTTOM MODAL FOR VARIANTS ================= */}
       {isModalOpen &&
         createPortal(
           <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center">
@@ -203,13 +222,13 @@ const ProductCard = ({ product }: { product: TProduct }) => {
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={() => setIsModalOpen(false)}
             />
-            <div className="relative w-full sm:max-w-sm bg-white rounded-t-2xl sm:rounded-xl p-4 animate-in slide-in-from-bottom duration-300">
+            <div className="relative w-full sm:max-w-sm bg-white rounded-t-2xl sm:rounded-2xl p-4 animate-in slide-in-from-bottom duration-300 shadow-2xl">
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h4 className="font-bold text-gray-900 text-sm line-clamp-1">
                     {product.product_title}
                   </h4>
-                  <p className="text-[#002447] font-black">৳{price.toFixed(2)}</p>
+                  <p className="text-[#002447] font-black text-sm mt-0.5">৳{price.toFixed(2)}</p>
                 </div>
                 <button
                   onClick={() => setIsModalOpen(false)}
@@ -225,10 +244,11 @@ const ProductCard = ({ product }: { product: TProduct }) => {
                   <button
                     key={v._id}
                     onClick={() => setSelectedVariantId(v._id)}
-                    className={`text-[13px] p-1.5 md:text-[15px] rounded-md border-2 transition-all font-[400] ${selectedVariantId === v._id
-                      ? "border-[#002447] bg-[#002447]/5 text-[#002447] font-semibold"
-                      : "border-gray-100 text-gray-600"
-                      }`}
+                    className={`text-xs sm:text-sm p-2 rounded-xl border-2 transition-all font-medium ${
+                      selectedVariantId === v._id
+                        ? "border-[#002447] bg-[#002447]/5 text-[#002447] font-bold"
+                        : "border-gray-100 text-gray-600 hover:border-slate-200"
+                    }`}
                   >
                     {getVariantLabel(v)}
                   </button>
@@ -237,13 +257,13 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
               <Button
                 onClick={handleAddToCart}
-                className="w-full h-11 font-bold tracking-wider bg-[#002447] hover:bg-[#071426] text-white shadow-sm"
+                className="w-full h-11 font-bold rounded-xl bg-[#002447] hover:bg-amber-600 text-white shadow-sm transition-all"
               >
                 Confirm • ৳{(price * quantity).toFixed(2)}
               </Button>
             </div>
           </div>,
-          document.body,
+          document.body
         )}
     </>
   );

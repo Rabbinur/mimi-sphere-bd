@@ -3,10 +3,22 @@ import { baseApi } from "../baseApi";
 const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     allCategory: builder.query({
-      query: (sub_categories = false) => ({
-        url: `/categories?sub_categories=${Boolean(sub_categories)}`,
-        method: "GET",
-      }),
+      query: (params = false) => {
+        let sub = false;
+        let active = true;
+        let nav = "";
+        if (typeof params === "boolean") {
+          sub = params;
+        } else if (typeof params === "object" && params !== null) {
+          sub = Boolean(params.sub_categories);
+          if (params.isActive !== undefined) active = Boolean(params.isActive);
+          if (params.showInNavbar !== undefined) nav = `&showInNavbar=${Boolean(params.showInNavbar)}`;
+        }
+        return {
+          url: `/categories?sub_categories=${sub}&isActive=${active}${nav}`,
+          method: "GET",
+        };
+      },
     }),
 
     singleCategory: builder.query({

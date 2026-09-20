@@ -6,7 +6,6 @@ const Header = () => {
   return (
     <>
       <TopBar />
-
       <MainHeader>
         <CategoriesBar />
       </MainHeader>

@@ -103,6 +103,7 @@ export interface TCategory {
   imageUrl: string;
   bannerImage?: string;
   isActive: boolean;
+  showInNavbar?: boolean;
   order?: number;
   sortOrder?: number;
   createdAt: Date;
