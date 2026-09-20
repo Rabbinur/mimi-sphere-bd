@@ -14,9 +14,13 @@ import { toast } from "sonner"
 
 interface CheckoutAbandonmentModalProps {
   isSubmitting?: boolean
+  onClaimCoupon?: (code: string) => void
 }
 
-const CheckoutAbandonmentModal = ({ isSubmitting = false }: CheckoutAbandonmentModalProps) => {
+const CheckoutAbandonmentModal = ({
+  isSubmitting = false,
+  onClaimCoupon,
+}: CheckoutAbandonmentModalProps) => {
   const { data: cmsResponse } = useGetCmsQuery()
   const popup = cmsResponse?.data?.exitIntentPopup
 
@@ -56,9 +60,9 @@ const CheckoutAbandonmentModal = ({ isSubmitting = false }: CheckoutAbandonmentM
 
   const handleClaim = () => {
     navigator.clipboard.writeText(voucherCode)
-    toast.success(`Voucher ${voucherCode} copied! Apply it to your order.`, {
-      icon: "🎉",
-    })
+    if (onClaimCoupon) {
+      onClaimCoupon(voucherCode)
+    }
     setIsOpen(false)
   }
 

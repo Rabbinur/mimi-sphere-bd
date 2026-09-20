@@ -75,6 +75,7 @@ const CheckoutPage = () => {
   const [isMounted, setIsMounted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discountAmount: number } | null>(null)
+  const [claimedCouponCode, setClaimedCouponCode] = useState<string>("")
   const [agreed, setAgreed] = useState(true)
 
   useEffect(() => {
@@ -460,6 +461,7 @@ const CheckoutPage = () => {
                   items={checkoutItems}
                   appliedCoupon={appliedCoupon}
                   onApply={setAppliedCoupon}
+                  claimedCouponCode={claimedCouponCode}
                 />
 
                 {/* Desktop-only Payment, Terms and CTA */}
@@ -576,7 +578,10 @@ const CheckoutPage = () => {
             </div>
           </div>
         </form>
-        <CheckoutAbandonmentModal isSubmitting={isSubmitting || isLoading} />
+        <CheckoutAbandonmentModal
+          isSubmitting={isSubmitting || isLoading}
+          onClaimCoupon={(code) => setClaimedCouponCode(code)}
+        />
       </div>
     </FormProvider>
   )

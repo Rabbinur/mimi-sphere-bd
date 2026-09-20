@@ -1,6 +1,4 @@
-"use client"
-
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { ShieldCheck, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -12,17 +10,19 @@ interface CouponSectionProps {
   items: CheckoutItem[]
   onApply: (coupon: { code: string; discountAmount: number } | null) => void
   appliedCoupon: { code: string; discountAmount: number } | null
+  claimedCouponCode?: string
 }
 
-const CouponSection = ({ items, onApply, appliedCoupon }: CouponSectionProps) => {
+const CouponSection = ({ items, onApply, appliedCoupon, claimedCouponCode }: CouponSectionProps) => {
   const [couponCode, setCouponCode] = useState("")
   const [applyCoupon, { isLoading: isApplying }] = useApplyCouponMutation()
 
-  const handleApplyCoupon = async () => {
-    if (!couponCode) return
+  const executeApplyCoupon = async (codeToApply: string) => {
+    const code = codeToApply.trim().toUpperCase()
+    if (!code) return
     try {
       const res = await applyCoupon({
-        couponCode: couponCode,
+        couponCode: code,
         products: items.map(item => ({
           product_id: item.product_id,
           quantity: item.quantity
@@ -31,15 +31,34 @@ const CouponSection = ({ items, onApply, appliedCoupon }: CouponSectionProps) =>
 
       if (res.success) {
         onApply({
-          code: res.couponCode,
+          code: res.couponCode || code,
           discountAmount: res.discountAmount
         })
-        toast.success(res.message)
+        toast.success(res.message || `Coupon ${code} applied successfully! 🎉`)
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Invalid coupon code")
       onApply(null)
     }
+  }
+
+  // When claimed from the exit-intent popup, auto-fill and auto-apply
+  useEffect(() => {
+    if (claimedCouponCode && claimedCouponCode.trim() !== "") {
+      const code = claimedCouponCode.trim().toUpperCase()
+      setCouponCode(code)
+      executeApplyCoupon(code)
+
+      // Smooth scroll to coupon section so the user sees it applied
+      const el = document.getElementById("coupon-section")
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" })
+      }
+    }
+  }, [claimedCouponCode])
+
+  const handleApplyCoupon = () => {
+    executeApplyCoupon(couponCode)
   }
 
   const handleRemoveCoupon = () => {
@@ -49,7 +68,7 @@ const CouponSection = ({ items, onApply, appliedCoupon }: CouponSectionProps) =>
   }
 
   return (
-    <div className="px-4 pb-4">
+    <div id="coupon-section" className="px-4 pb-4 transition-all">
       <p className="text-xs font-bold text-gray-700 mb-2">Have a Coupon?</p>
       <div className="flex gap-2">
         <Input
