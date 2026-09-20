@@ -9,12 +9,28 @@ interface VariantSelectorProps {
   options: any[];
   selectedOptions: Record<string, string>;
   onOptionChange: (name: string, value: string) => void;
+  variants?: any[];
+  selectedVariant?: any;
 }
+
+const normalizeValues = (val: any): Record<string, string> => {
+  if (!val) return {};
+  const raw = val instanceof Map ? Object.fromEntries(val as Map<string, string>) : (typeof val === "object" ? val : {});
+  const normalized: Record<string, string> = {};
+  for (const [k, v] of Object.entries(raw)) {
+    if (k && v !== undefined && v !== null) {
+      normalized[String(k).trim().toLowerCase()] = String(v).trim().toLowerCase();
+    }
+  }
+  return normalized;
+};
 
 export function VariantSelector({
   options,
   selectedOptions,
   onOptionChange,
+  variants,
+  selectedVariant,
 }: VariantSelectorProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -22,6 +38,19 @@ export function VariantSelector({
 
   const totalOptions = options.reduce((acc, opt) => acc + opt.option_values.length, 0);
   const showExpandButton = totalOptions > 20;
+
+  const getOptionValueStock = (optName: string, val: string) => {
+    if (!variants || variants.length === 0) return undefined;
+    const candidate = { ...selectedOptions, [optName]: val };
+    const matched = variants.find((v) => {
+      const vObj = normalizeValues(v.variant_option_values);
+      return Object.entries(candidate).every(([k, v]) => {
+        const targetVal = String(v).trim().toLowerCase();
+        return vObj[k.toLowerCase()] === targetVal;
+      });
+    });
+    return matched ? matched.variant_quantity : undefined;
+  };
 
   return (
     <div className="relative">
@@ -31,15 +60,26 @@ export function VariantSelector({
       >
         {options.map((option) => (
           <div key={option.option_name}>
-            <Label
-              htmlFor={option.option_name}
-              className="text-gray-700 font-semibold mb-1 block text-[13px]"
-            >
-              {option.option_name}:{" "}
-              <span className="text-primary ml-1">
-                {selectedOptions[option.option_name]}
-              </span>
-            </Label>
+            <div className="flex items-center justify-between mb-1.5">
+              <Label
+                htmlFor={option.option_name}
+                className="text-gray-800 font-semibold block text-[13px]"
+              >
+                {option.option_name}:{" "}
+                <span className="text-primary font-bold ml-1">
+                  {selectedOptions[option.option_name]}
+                </span>
+              </Label>
+
+              {selectedVariant && typeof selectedVariant.variant_quantity === "number" && (
+                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full">
+                  {selectedVariant.variant_quantity > 0
+                    ? `${selectedVariant.variant_quantity} units available`
+                    : "Out of Stock"}
+                </span>
+              )}
+            </div>
+
             <RadioGroup
               id={option.option_name}
               value={selectedOptions[option.option_name] || ""}
@@ -48,14 +88,19 @@ export function VariantSelector({
             >
               {option.option_values.map((value: string) => {
                 const isActive = selectedOptions[option.option_name] === value;
+                const stock = getOptionValueStock(option.option_name, value);
+                const isOutOfStock = stock !== undefined && stock <= 0;
+
                 return (
                   <Label
                     key={value}
                     htmlFor={`${option.option_name}-${value}`}
-                    className={`border cursor-pointer rounded-md px-2.5 py-1 text-xs md:text-[13px] font-medium transition-all duration-150
+                    className={`border cursor-pointer rounded-md px-3 py-1.5 text-xs md:text-[13px] font-medium transition-all duration-150 inline-flex items-center gap-1.5 select-none
                       ${isActive
-                        ? "bg-primary border-primary text-white"
-                        : "bg-white border-gray-100 text-gray-700 hover:bg-gray-50"
+                        ? "bg-primary border-primary text-white shadow-xs"
+                        : isOutOfStock
+                          ? "bg-slate-50 border-dashed border-gray-300 text-gray-400 hover:bg-gray-100"
+                          : "bg-white border-gray-200 text-gray-800 hover:border-gray-400 hover:bg-gray-50"
                       }
                     `}
                   >
@@ -64,7 +109,20 @@ export function VariantSelector({
                       value={value}
                       className="sr-only"
                     />
-                    {value}
+                    <span>{value}</span>
+                    {typeof stock === "number" && (
+                      <span
+                        className={`text-[10px] font-semibold px-1 py-0.2 rounded ${
+                          isActive
+                            ? "bg-white/20 text-white"
+                            : isOutOfStock
+                              ? "text-red-500 bg-red-50"
+                              : "text-slate-500 bg-slate-100"
+                        }`}
+                      >
+                        {isOutOfStock ? "0" : stock}
+                      </span>
+                    )}
                   </Label>
                 );
               })}

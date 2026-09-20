@@ -390,6 +390,8 @@ export default function ProductClient({ product }: { product: TProduct }) {
             onOptionChange={(name, value) =>
               setSelectedOptions((prev) => ({ ...prev, [name]: value }))
             }
+            variants={variants}
+            selectedVariant={selectedVariant}
           />
 
           <div className="space-y-1.5   border-gray-100">
