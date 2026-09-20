@@ -1,39 +1,43 @@
 const ProductCardLoading = () => {
-    return (
-        <div className="border border-gray-300 w-full relative rounded-md overflow-hidden flex flex-col animate-pulse">
+  return (
+    <div className="relative bg-white rounded-2xl flex flex-col h-full overflow-hidden"
+      style={{ border: "1px solid rgba(226,232,240,0.9)", boxShadow: "0 2px 10px rgba(0,0,0,0.055)" }}
+    >
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -400px 0; }
+          100% { background-position: 400px 0; }
+        }
+        .skeleton-shine {
+          background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+          background-size: 800px 100%;
+          animation: shimmer 1.4s ease-in-out infinite;
+        }
+      `}</style>
 
-            {/* Image Skeleton */}
-            <div className="relative mb-2">
-                <div className="h-[200px] md:h-[300px] w-full bg-gray-200" />
-            </div>
+      {/* Image Skeleton */}
+      <div className="skeleton-shine w-full" style={{ aspectRatio: "1 / 1" }} />
 
-            {/* Content */}
-            <div className="p-1.5 md:p-2 pt-0 flex flex-col flex-grow">
+      {/* Content */}
+      <div className="flex flex-col flex-grow px-3 pt-2.5 pb-3 gap-2">
+        {/* Title */}
+        <div className="skeleton-shine h-3.5 rounded-full w-4/5" />
+        <div className="skeleton-shine h-3.5 rounded-full w-3/5" />
 
-                {/* Title */}
-                <div className="h-4 md:h-5 bg-gray-200 rounded w-4/5 mt-2 mb-2" />
+        <div className="flex-grow" />
 
-                {/* Variant selector skeleton */}
-                <div className="mb-2">
-                    <div className="h-3 bg-gray-200 rounded w-1/3 mb-1" />
-                    <div className="h-9 bg-gray-200 rounded-md w-full" />
-                </div>
-
-                {/* Price row */}
-                <div className="flex items-center gap-3 flex-wrap mb-2">
-                    <div className="h-6 w-20 bg-gray-200 rounded" />
-                    <div className="h-4 w-16 bg-gray-200 rounded" />
-                    <div className="h-4 w-14 bg-gray-200 rounded-full" />
-                </div>
-
-                {/* Actions */}
-                <div className="flex items-center justify-between gap-2 md:gap-[15px] border-gray-300 border-t mt-auto pt-2">
-                    <div className="h-9 md:h-[42px] w-full bg-gray-200 rounded-md md:rounded-xl" />
-                    <div className="h-10 w-10 bg-gray-200 rounded-full hidden md:block" />
-                </div>
-            </div>
+        {/* Price + Cart Row */}
+        <div className="flex items-center justify-between gap-2 mt-1">
+          <div className="flex flex-col gap-1">
+            <div className="skeleton-shine h-4 rounded-full w-16" />
+            <div className="skeleton-shine h-3 rounded-full w-10" />
+          </div>
+          <div className="skeleton-shine w-9 h-9 rounded-full shrink-0" />
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default ProductCardLoading;
+
