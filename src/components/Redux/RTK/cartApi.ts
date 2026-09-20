@@ -2,7 +2,7 @@ import { baseApi } from '../baseApi';
 
 export const cartApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getCart: builder.query({
+    getCart: builder.query<any, void>({
       query: () => ({
         url: '/cart',
         method: 'GET',
@@ -33,7 +33,7 @@ export const cartApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Cart'],
     }),
-    clearCartServer: builder.mutation({
+    clearCartServer: builder.mutation<any, void>({
       query: () => ({
         url: '/cart/clear',
         method: 'DELETE',
