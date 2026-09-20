@@ -5,6 +5,8 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { useOrderNowMutation } from "@/components/Redux/RTK/orderApi"
+import { useClearCartServerMutation } from "@/components/Redux/RTK/cartApi"
+import { clearCart } from "@/components/Redux/Slice/cartSlice"
 import { useUpsertCheckoutLeadMutation } from "@/components/Redux/RTK/checkoutLeadApi"
 import { useAppDispatch, useAppSelector } from "@/components/Redux/hooks"
 import type { RootState } from "@/components/Redux/store"
@@ -71,6 +73,7 @@ const CheckoutPage = () => {
   const userInfo = useAppSelector((s: RootState) => s.auth.userInfo)
 
   const [orderNow, { isLoading }] = useOrderNowMutation()
+  const [clearCartServer] = useClearCartServerMutation()
 
   const [isMounted, setIsMounted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -404,6 +407,10 @@ const CheckoutPage = () => {
           };
           sessionStorage.setItem("last_order_user_data", JSON.stringify(userDataToStore));
         }
+
+        // Clear both Redux local cart and server cart
+        dispatch(clearCart());
+        clearCartServer().unwrap().catch(() => {});
 
         // If payment method is Online, redirect to bKash URL returned from the server
         if (values.payment_method === "ONLINE" && res.bkashURL) {

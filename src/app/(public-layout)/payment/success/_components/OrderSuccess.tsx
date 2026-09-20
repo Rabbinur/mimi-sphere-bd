@@ -26,8 +26,15 @@ import {
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { useAppDispatch } from "@/components/Redux/hooks";
+import { clearCart } from "@/components/Redux/Slice/cartSlice";
+import { useClearCartServerMutation } from "@/components/Redux/RTK/cartApi";
 
 const OrderSuccess = ({ orderId }: { orderId?: string | null }) => {
+    const dispatch = useAppDispatch();
+    const [clearCartServer] = useClearCartServerMutation();
+    const hasClearedCart = useRef(false);
+
     const { data: orderData, isLoading: isOrderLoading } = useOrderByIdQuery(orderId || "", {
         skip: !orderId,
     });
@@ -41,6 +48,14 @@ const OrderSuccess = ({ orderId }: { orderId?: string | null }) => {
     const [copied, setCopied] = useState(false);
     const [showReturnPolicy, setShowReturnPolicy] = useState(false);
     const hasFiredPurchase = useRef(false);
+
+    useEffect(() => {
+        if (!hasClearedCart.current) {
+            hasClearedCart.current = true;
+            dispatch(clearCart());
+            clearCartServer().unwrap().catch(() => {});
+        }
+    }, [dispatch, clearCartServer]);
 
     useEffect(() => {
         if (order && order.order_id && !hasFiredPurchase.current) {
