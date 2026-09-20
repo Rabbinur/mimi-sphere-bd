@@ -80,7 +80,7 @@ export function MobileNav() {
       <div className="grid h-full max-w-lg grid-cols-5 mx-auto px-2 items-center">
         {/* Left 2 items */}
         <NavItem href="/" icon={Home} label="Home" />
-        <NavItem href="/categories" icon={LayoutGrid} label="Cats" />
+        <NavItem href="/categories" icon={LayoutGrid} label="Category" />
 
         {/* Center: Floating Button Area (3rd column) */}
         <div className="relative flex items-center justify-center -translate-y-1">

@@ -39,8 +39,8 @@ const ScrollToTop = () => {
         <div
             onClick={handleBackToTop}
             className={cn(
-                "fixed left-6 z-[99] cursor-pointer rounded-full transition-all duration-300 ease-linear shadow-lg flex items-center justify-center bg-white/80 backdrop-blur-sm",
-                "bottom-24 md:bottom-10 h-[46px] w-[46px]",
+                "fixed right-4 md:left-6 z-[40] cursor-pointer rounded-full transition-all duration-300 ease-linear shadow-lg flex items-center justify-center bg-white/90 backdrop-blur-sm",
+                "bottom-20 md:bottom-10 h-[40px] w-[40px] md:h-[46px] md:w-[46px]",
                 isVisible ? "opacity-100 translate-y-0 visible" : "opacity-0 translate-y-4 invisible pointer-events-none"
             )}
             style={{

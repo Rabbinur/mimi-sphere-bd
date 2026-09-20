@@ -14,6 +14,7 @@ import sidebarReducer from "./Slice/sidebarSlice";
 import authReducer from "./Slice/authSlice";
 import cartReducer from "./Slice/cartSlice";
 import orderReducer from "./Slice/orderSlice";
+import wishlistReducer from "./Slice/wishlistSlice";
 
 import { baseApi } from "./baseApi";
 
@@ -49,9 +50,15 @@ const orderPersistConfig = {
   storage,
 };
 
+const wishlistPersistConfig = {
+  key: "wishlist",
+  storage,
+};
+
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 const persistedOrderReducer = persistReducer(orderPersistConfig, orderReducer);
+const persistedWishlistReducer = persistReducer(wishlistPersistConfig, wishlistReducer);
 
 export const store = configureStore({
   reducer: {
@@ -60,6 +67,7 @@ export const store = configureStore({
     sidebar: sidebarReducer,
     cart: persistedCartReducer,
     order: persistedOrderReducer,
+    wishlist: persistedWishlistReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

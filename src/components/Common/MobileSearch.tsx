@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { SearchBar } from "./SearchBar";
 
 interface MobileSearchProps {
@@ -11,23 +11,23 @@ interface MobileSearchProps {
 export const MobileSearch = ({ isOpen, setIsOpen }: MobileSearchProps) => {
     return (
         <>
-            {/* Mobile Search Toggle */}
+            {/* Mobile Search Toggle Button */}
             <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden flex flex-col items-center justify-center group transition-all"
+                aria-label={isOpen ? "Close search" : "Open search"}
+                className="md:hidden flex items-center justify-center w-8 h-8 rounded-full hover:bg-slate-100 text-slate-700 active:scale-95 transition-all border border-slate-200/80 bg-white"
             >
-                <div className="p-1.5 rounded-full group-hover:bg-slate-100 transition-colors">
-                    <Search className="w-5 h-5 md:w-6 md:h-6 text-slate-700 stroke-[1.5]" />
-                </div>
-
-                {/* <span className="text-[9px] md:text-[10px] font-bold text-primary/90 uppercase tracking-tight group-hover:text-primary transition-colors">
-                    Search
-                </span> */}
+                {isOpen ? (
+                    <X className="w-4 h-4 text-slate-700 stroke-[2]" />
+                ) : (
+                    <Search className="w-4 h-4 text-slate-700 stroke-[2]" />
+                )}
             </button>
 
             {/* Mobile Search Expandable Bar */}
             {isOpen && (
-                <div className="absolute left-0 right-0 top-full bg-white px-2 py-3 border-b md:hidden animate-in slide-in-from-top-2 duration-200 shadow-md">
+                <div className="absolute left-0 right-0 top-full bg-white/98 backdrop-blur-md px-3 py-2.5 border-b border-slate-200/80 md:hidden animate-in slide-in-from-top-2 duration-200 shadow-lg z-50">
                     <SearchBar onResultClick={() => setIsOpen(false)} />
                 </div>
             )}

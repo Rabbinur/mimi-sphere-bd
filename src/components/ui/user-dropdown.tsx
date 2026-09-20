@@ -1,6 +1,7 @@
 "use client";
 import {
     ChevronDown,
+    Heart,
     HelpCircle,
     LogOut,
     Settings,
@@ -126,10 +127,11 @@ export default function UserDropdown(): JSX.Element | null {
             ) : (
                 <Link
                     href="/login"
-                    className="flex items-center gap-1.5 px-3 py-1.5 md:px-3.5 md:py-2 rounded-full border border-slate-200/90 bg-white hover:bg-[#002447] text-slate-700 hover:text-white transition-all duration-200 shadow-2xs hover:shadow-sm group text-xs font-bold"
+                    aria-label="Sign In"
+                    className="flex items-center justify-center gap-1.5 p-2 sm:px-3.5 sm:py-2 rounded-full border border-slate-200/90 bg-white hover:bg-[#002447] text-slate-700 hover:text-white transition-all duration-200 shadow-2xs hover:shadow-sm group text-xs font-bold shrink-0"
                 >
-                    <User className="w-3.5 h-3.5 text-amber-500 group-hover:text-amber-400 transition-colors" />
-                    <span>Sign In</span>
+                    <User className="w-4 h-4 text-amber-500 group-hover:text-amber-400 transition-colors" />
+                    <span className="hidden sm:inline">Sign In</span>
                 </Link>
             )}
 
@@ -185,7 +187,22 @@ export default function UserDropdown(): JSX.Element | null {
                                             </div>
                                         </Link>
                                         <Link
-                                            href="user-account/account-settings"
+                                            href="/user-account/wishlist"
+                                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-primary/5 hover:text-primary transition-all group"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            <div className="p-2 rounded-lg bg-slate-100 group-hover:bg-primary/10 transition-colors">
+                                                <Heart className="w-4 h-4 text-rose-500" />
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-sm font-semibold">My Wishlist</span>
+                                                <span className="text-[11px] text-slate-400 leading-none">
+                                                    Saved favorite items
+                                                </span>
+                                            </div>
+                                        </Link>
+                                        <Link
+                                            href="/user-account/account-settings"
                                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-primary/5 hover:text-primary transition-all group"
                                             onClick={() => setIsOpen(false)}
                                         >

@@ -1,15 +1,17 @@
 "use client";
 
-import { ShoppingBag, Sparkles } from "lucide-react";
+import { Heart, MapPin, ShoppingBag, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../Redux/hooks";
 import { useCurrentUserInfo } from "../Redux/Slice/authSlice";
+import { selectWishlistCount } from "../Redux/Slice/wishlistSlice";
 import CartSheet from "../ui/CartSheet";
 import UserDropdown from "../ui/user-dropdown";
 
 export const AccountActions = ({ cartItems }: { cartItems: any }) => {
     const user = useAppSelector(useCurrentUserInfo);
+    const wishlistCount = useAppSelector(selectWishlistCount);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -32,7 +34,35 @@ export const AccountActions = ({ cartItems }: { cartItems: any }) => {
                 <span>Offers</span>
             </Link>
 
-            {/* 2. Premium Cart Button */}
+            {/* 2. Stores / Outlets Button */}
+            <Link
+                href="/outlets"
+                aria-label="View outlet stores"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full border border-slate-200/90 bg-white hover:border-slate-300 text-slate-700 hover:text-primary transition-all shadow-2xs group"
+                title="Store Locations"
+            >
+                <MapPin className="w-4 h-4 text-slate-600 group-hover:text-primary transition-colors" />
+                <span className="hidden sm:inline text-xs font-bold text-slate-800 group-hover:text-primary transition-colors">
+                    Stores
+                </span>
+            </Link>
+
+            {/* 3. Wishlist Button with Badge */}
+            <Link
+                href="/user-account/wishlist"
+                aria-label={`View wishlist, ${wishlistCount} items`}
+                className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-slate-200/90 bg-white hover:border-pink-300 text-slate-700 hover:text-[#ff3366] transition-all shadow-2xs group"
+                title="My Wishlist"
+            >
+                <Heart className="w-4 h-4 transition-transform group-hover:scale-110" />
+                {mounted && wishlistCount > 0 && (
+                    <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[17px] h-[17px] px-1 rounded-full bg-[#ff3366] text-[10px] font-black text-white ring-2 ring-white shadow-xs">
+                        {wishlistCount}
+                    </span>
+                )}
+            </Link>
+
+            {/* 3. Premium Cart Button */}
             <CartSheet cartItems={cartItems}>
                 <button
                     aria-label="Open Shopping Cart"

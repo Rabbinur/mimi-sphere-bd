@@ -46,7 +46,7 @@ export const MainHeader = ({ children }: { children?: React.ReactNode }) => {
           </div>
 
           {/* Right: Modern Actions Group */}
-          <div className="flex items-center justify-end gap-2 shrink-0">
+          <div className="flex items-center justify-end gap-1.5 sm:gap-2 shrink-0">
             <MobileSearch isOpen={isMobileSearchOpen} setIsOpen={setIsMobileSearchOpen} />
             <AccountActions cartItems={cartItems} />
           </div>
